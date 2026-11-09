@@ -128,6 +128,8 @@
     <string name="piko_friendship_status">Status de amizade</string>
     <string name="piko_follow_list_non_follower_badge">Mostrar quem não te segue na lista de pessoas que você segue</string>
     <string name="piko_follow_list_non_follower_badge_desc">Adiciona um selo na sua lista de Seguindo em contas que não te seguem de volta</string>
+    <string name="piko_resume_reels_after_scrolling">Retomar Reels após rolar a tela</string>
+    <string name="piko_resume_reels_after_scrolling_desc">Continue a reprodução de um Reel de onde parou ao voltar para ele</string>
     <string name="piko_improve_image_viewing">Melhorar qualidade de imagens</string>
     <string name="piko_improve_image_viewing_desc">Obtém imagens de resolução máxima do servidor. Pode reduzir o desempenho, aumentar o tamanho dos dados do aplicativo ou fazer com que o aplicativo mude para um layout mais antigo</string>
     <string name="piko_copy_comment">Copiar comentário</string>

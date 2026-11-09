@@ -36,7 +36,7 @@ public class NativeDownloader {
             case 3:
                 return tweet.getTweetUserId() + "_" + tweetId;
             case 5:
-                return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS"));
             default:
                 return tweetId;
         }

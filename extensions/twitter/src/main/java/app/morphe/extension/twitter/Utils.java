@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -272,6 +273,7 @@ public class Utils {
                 if (!result) {
                     toast("Failed to rename temp file");
                 } else {
+                    MediaScannerConnection.scanFile(ctx, new String[]{ file.getAbsolutePath() }, null, null);
                     toast(str("exo_download_completed") + ": " + filename);
                 }
             } else if (url != null && url.contains("name=orig")) {
@@ -304,6 +306,7 @@ public class Utils {
 
         File file = new File(Environment.getExternalStorageDirectory(), getPath(publicFolder, subFolder, filename));
         if (file.exists()) {
+            MediaScannerConnection.scanFile(ctx, new String[]{ file.getAbsolutePath() }, null, null);
             toast(str("exo_download_completed") + ": " + filename);
             return;
         }

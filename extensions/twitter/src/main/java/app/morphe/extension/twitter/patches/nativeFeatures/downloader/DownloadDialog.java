@@ -332,7 +332,7 @@ public class DownloadDialog {
         PikoUtils.toast(str("download_started"));
         Media media = item.media;
         String fileName = item.fileName;
-        app.morphe.extension.twitter.Utils.downloadFile(media.url, fileName, media.ext);
+        app.morphe.extension.twitter.Utils.downloadFile(media.url, fileName, media.ext, media.type == 0);
     }
 
 

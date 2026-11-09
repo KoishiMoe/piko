@@ -112,7 +112,7 @@ public class NativeDownloader {
             if (media.size() == 1 && media.get(0).size() == 1) {
                 Media singleMedia = media.get(0).get(0);
                 PikoUtils.toast(str("download_started"));
-                app.morphe.extension.twitter.Utils.downloadFile(singleMedia.url, fileName, singleMedia.ext);
+                app.morphe.extension.twitter.Utils.downloadFile(singleMedia.url, fileName, singleMedia.ext, singleMedia.type == 0);
                 return;
             }
 
@@ -120,7 +120,7 @@ public class NativeDownloader {
             if (Pref.nativeDownloaderAutodownloadHighestVideoRes() && media.size() == 1 && media.get(0).size() > 1) {
                 Media highestResMedia = media.get(0).get(0);
                 PikoUtils.toast(str("download_started"));
-                app.morphe.extension.twitter.Utils.downloadFile(highestResMedia.url, fileName + "_" + highestResMedia.resolution, highestResMedia.ext);
+                app.morphe.extension.twitter.Utils.downloadFile(highestResMedia.url, fileName + "_" + highestResMedia.resolution, highestResMedia.ext, highestResMedia.type == 0);
                 return;
             }
 

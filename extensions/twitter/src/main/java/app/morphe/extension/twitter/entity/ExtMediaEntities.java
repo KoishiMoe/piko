@@ -44,9 +44,60 @@ public class ExtMediaEntities extends Debug{
         return (String) super.getField("getThumbnailField");
     }
 
+    private static boolean isValidImageExt(String ext) {
+        return ext.equals("png") || ext.equals("jpg") || ext.equals("jpeg") || ext.equals("webp");
+    }
+
+    public String getImageExtension() {
+        try {
+            String url = this.getImageUrl();
+            if (url != null) {
+                // 1. 优先从 query 参数中提取 format=
+                int formatIdx = url.indexOf("format=");
+                if (formatIdx != -1) {
+                    int start = formatIdx + 7;
+                    int end = url.indexOf('&', start);
+                    String fmt = (end != -1 ? url.substring(start, end) : url.substring(start)).toLowerCase();
+                    if (isValidImageExt(fmt)) return fmt;
+                }
+
+                // 2. Fallback: 从路径提取后缀
+                String path = url;
+                int queryIndex = url.indexOf('?');
+                if (queryIndex != -1) path = url.substring(0, queryIndex);
+                int lastDot = path.lastIndexOf('.');
+                if (lastDot != -1 && lastDot > path.lastIndexOf('/')) {
+                    String ext = path.substring(lastDot + 1).toLowerCase();
+                    if (isValidImageExt(ext)) return ext;
+                }
+            }
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+        }
+        return "jpg";
+    }
+
     public String getHighResImageUrl()
             throws Exception {
-        return this.getImageUrl() + "?name=orig&format=jpg";
+        String url = this.getImageUrl();
+        if (url == null || url.isEmpty()) {
+            return "";
+        }
+
+        if (url.contains("?")) {
+            if (url.contains("?name=") || url.contains("&name=")) {
+                return url.replaceFirst("([?&])name=[^&]+", "$1name=orig");
+            } else {
+                return url + "&name=orig";
+            }
+        }
+
+        int lastDot = url.lastIndexOf('.');
+        if (lastDot == -1 || lastDot < url.lastIndexOf('/')) {
+            return url + "?name=orig&format=" + this.getImageExtension();
+        }
+
+        return url + "?name=orig";
     }
 
     public ArrayList<Media> getVideos() throws Exception {
@@ -92,7 +143,7 @@ public class ExtMediaEntities extends Debug{
 
                 int type = 0;
                 String url = this.getHighResImageUrl();
-                String ext = "jpg";
+                String ext = this.getImageExtension();
                 String res = this.getHighestResolution();
                 imageList.add(new Media(type, url, ext, res));
 

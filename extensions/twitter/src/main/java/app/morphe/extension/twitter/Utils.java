@@ -249,7 +249,7 @@ public class Utils {
     }
 
     private static void postDownload(String filename, File tempFile, File file, Intent intent, long downloadId,
-            BroadcastReceiver broadcastReceiver, String url, String mediaName, String ext) {
+            BroadcastReceiver broadcastReceiver, String url, String mediaName, String ext, boolean isPhoto) {
         long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
         if (id == downloadId) {
             ctx.unregisterReceiver(broadcastReceiver);
@@ -278,7 +278,7 @@ public class Utils {
                 }
             } else if (url != null && url.contains("name=orig")) {
                 String fallbackUrl = url.replace("name=orig", "name=4096x4096");
-                downloadFile(fallbackUrl, mediaName, ext);
+                downloadFile(fallbackUrl, mediaName, ext, isPhoto);
             } else {
                 toast("Download failed: " + filename);
             }
@@ -286,9 +286,8 @@ public class Utils {
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    public static void downloadFile(String url, String mediaName, String ext) {
+    public static void downloadFile(String url, String mediaName, String ext, boolean isPhoto) {
         String filename = sanitizeFilename(mediaName + "." + ext);
-        boolean isPhoto = ext.equals("jpg");
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription("Downloading " + filename);
@@ -325,14 +324,14 @@ public class Utils {
             ctx.registerReceiver(new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    postDownload(filename, tempFile, file, intent, downloadId, this, url, mediaName, ext);
+                    postDownload(filename, tempFile, file, intent, downloadId, this, url, mediaName, ext, isPhoto);
                 }
             }, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
         } else {
             ctx.registerReceiver(new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    postDownload(filename, tempFile, file, intent, downloadId, this, url, mediaName, ext);
+                    postDownload(filename, tempFile, file, intent, downloadId, this, url, mediaName, ext, isPhoto);
                 }
             }, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         }

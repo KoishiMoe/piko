@@ -1,3 +1,10 @@
+## [3.11.1](https://github.com/KoishiMoe/piko/compare/v3.11.0...v3.11.1) (2026-11-09)
+
+### 🐛 Bug Fixes
+
+* **twitter:** image always saved as jpg ([f2fd9d7](https://github.com/KoishiMoe/piko/commit/f2fd9d754ff6eadca1c2d19619384e4de07e9337))
+* **twitter:** potential media store inconsistence & filename conflict ([9fe1be2](https://github.com/KoishiMoe/piko/commit/9fe1be2c967fe2a3abafb7114f892124f6094a9b))
+
 ## [3.11.0](https://github.com/crimera/piko/compare/v3.10.0...v3.11.0) (2026-11-09)
 
 ### 🐛 Bug Fixes

@@ -1,3 +1,13 @@
+## [3.12.0](https://github.com/KoishiMoe/piko/compare/v3.11.1...v3.12.0) (2026-11-15)
+
+### 🐛 Bug Fixes
+
+* **twitter:** fix gallery black screen on 10th+ images and add page counter ([3fae63c](https://github.com/KoishiMoe/piko/commit/3fae63c13f4955c3f5c380d0e6ac1c8b0acfbdbc))
+
+### ✨ New Features
+
+* **twitter:** add multi-image badge and seamless stitch viewer ([f8e7d7c](https://github.com/KoishiMoe/piko/commit/f8e7d7c5fc655b74a6343fffa3934af99fd92ad5))
+
 ## [3.11.1](https://github.com/KoishiMoe/piko/compare/v3.11.0...v3.11.1) (2026-11-09)
 
 ### 🐛 Bug Fixes

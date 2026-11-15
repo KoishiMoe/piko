@@ -71,9 +71,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.11.1](https://github.com/KoishiMoe/piko/releases/tag/v3.11.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;146 patches total
+> **[v3.12.0](https://github.com/KoishiMoe/piko/releases/tag/v3.12.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;149 patches total
 <details>
-<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;75 patches</summary>
+<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;78 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -117,6 +117,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Enable debug menu for posts](#enable-debug-menu-for-posts) |  |  |
 | [Enable force HD videos](#enable-force-hd-videos) | Videos will be played in highest quality always |  |
 | [Export all activities](#export-all-activities) | Makes all app activities exportable. |  |
+| [Fix gallery black screen](#fix-gallery-black-screen) | Fixes 10th+ image black screen and broken tap/zoom controls in gallery, and shows a page counter |  |
 | [Force enable translate](#force-enable-translate) | Get translate option for all posts |  |
 | [Handle custom twitter links](#handle-custom-twitter-links) | Adds support for opening custom twitter links such as vxtwitter, fxtwitter, and fixupx within the app. These will have to be manually enabled under the "Open by default" section in the app info! | • Custom sharing domains<br>• Include unofficial vxtwitter/fxtwitter instance links |
 | [Hide Banner](#hide-banner) | Hide new post banner |  |
@@ -140,6 +141,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Legacy share links](#legacy-share-links) | Brings back username on post share links. Works post 11.4x.xx |  |
 | [Log server response](#log-server-response) | Log json responses received from server |  |
 | [More information on profile](#more-information-on-profile) | Adds more details on the profile page |  |
+| [Multi-image post badge](#multi-image-post-badge) | Shows a +N badge on the 4th grid cell when a post has more than 4 images |  |
 | [Native downloader](#native-downloader) | Requires X 11.0.0-release.0 or higher. |  |
 | [Native reader mode](#native-reader-mode) | Requires X 11.0.0-release.0 or higher. |  |
 | [Native translator](#native-translator) | Requires X 11.0.0-release.0 or higher. |  |
@@ -157,6 +159,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Show poll results](#show-poll-results) | Adds an option to show poll results without voting |  |
 | [Show post source label](#show-post-source-label) | Source label will be shown only on public posts |  |
 | [Show sensitive media](#show-sensitive-media) |  |  |
+| [Stitch images](#stitch-images) | Adds a seamless horizontal/vertical stitched viewer for multi-image posts in the gallery and share menu |  |
 | [Support external downloader](#support-external-downloader) |  |  |
 
 </details>

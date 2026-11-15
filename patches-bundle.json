@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-09T19:51:49",
-  "description": "## [3.11.1](https://github.com/KoishiMoe/piko/compare/v3.11.0...v3.11.1) (2026-11-09)\n\n### 🐛 Bug Fixes\n\n* **twitter:** image always saved as jpg ([f2fd9d7](https://github.com/KoishiMoe/piko/commit/f2fd9d754ff6eadca1c2d19619384e4de07e9337))\n* **twitter:** potential media store inconsistence & filename conflict ([9fe1be2](https://github.com/KoishiMoe/piko/commit/9fe1be2c967fe2a3abafb7114f892124f6094a9b))",
-  "download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.11.1/patches-3.11.1.mpp",
-  "signature_download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.11.1/patches-3.11.1.mpp.asc",
-  "version": "3.11.1"
+  "created_at": "2026-11-15T15:15:47",
+  "description": "## [3.12.0](https://github.com/KoishiMoe/piko/compare/v3.11.1...v3.12.0) (2026-11-15)\n\n### 🐛 Bug Fixes\n\n* **twitter:** fix gallery black screen on 10th+ images and add page counter ([3fae63c](https://github.com/KoishiMoe/piko/commit/3fae63c13f4955c3f5c380d0e6ac1c8b0acfbdbc))\n\n### ✨ New Features\n\n* **twitter:** add multi-image badge and seamless stitch viewer ([f8e7d7c](https://github.com/KoishiMoe/piko/commit/f8e7d7c5fc655b74a6343fffa3934af99fd92ad5))",
+  "download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.12.0/patches-3.12.0.mpp",
+  "signature_download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.12.0/patches-3.12.0.mpp.asc",
+  "version": "3.12.0"
 }

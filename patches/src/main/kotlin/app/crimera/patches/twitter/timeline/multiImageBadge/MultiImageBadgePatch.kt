@@ -10,8 +10,9 @@ import app.crimera.patches.twitter.misc.settings.settingsPatch
 import app.crimera.patches.twitter.utils.Constants.COMPATIBILITY_X
 import app.crimera.patches.twitter.utils.Constants.PATCHES_DESCRIPTOR
 import app.crimera.patches.twitter.utils.enableSettings
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import com.android.tools.smali.dexlib2.Opcode
@@ -38,14 +39,14 @@ val multiImageBadgePatch =
                     throw PatchException("Failed to find RETURN_VOID in TweetMediaView.setMediaItems")
                 }
 
-                // Insert from back to front so earlier indices stay valid.
+                // Replace each `return-void` in-place so existing branch labels jumping to it
+                // land on the badge update instead of skipping over it.
                 returnIndices.sortedDescending().forEach { retIndex ->
-                    addInstructions(
+                    replaceInstruction(
                         retIndex,
-                        """
-                            invoke-static/range {p0 .. p1}, $GALLERY_HELPER_DESCRIPTOR->updateMultiImageBadge(Landroid/view/ViewGroup;Ljava/util/List;)V
-                        """.trimIndent(),
+                        "invoke-static/range {p0 .. p1}, $GALLERY_HELPER_DESCRIPTOR->updateMultiImageBadge(Landroid/view/ViewGroup;Ljava/util/List;)V",
                     )
+                    addInstruction(retIndex + 1, "return-void")
                 }
             }
 

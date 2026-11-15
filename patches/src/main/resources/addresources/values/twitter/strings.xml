@@ -473,4 +473,60 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_stitch_save_success">Saved to Pictures/Twitter/%s</string>
     <string name="piko_stitch_save_downscaled">Image exceeded memory limit and was scaled to %d%%</string>
     <string name="piko_stitch_save_failed">Failed to save stitched image: %s</string>
+
+    <!-- Author external lookup -->
+    <string name="piko_title_author_lookup">Look up author on Danbooru</string>
+    <string name="piko_pref_author_lookup_toggle">Author external lookup</string>
+    <string name="piko_pref_author_lookup_toggle_desc">Adds a share menu shortcut to open the external lookup page for the post author in your browser</string>
+    <string name="piko_author_lookup_no_username">Unable to resolve author username</string>
+
+    <!-- Quick search -->
+    <string name="piko_title_quick_search">Quick search</string>
+    <string name="piko_pref_quick_search_toggle">Enable quick search builder</string>
+    <string name="piko_pref_quick_search_toggle_desc">Adds an interactive query builder in the post share menu for searching that account</string>
+    <string name="piko_pref_quick_search_keywords_en">Preset keywords (EN)</string>
+    <string name="piko_pref_quick_search_keywords_ja">Preset keywords (日本語)</string>
+    <string name="piko_pref_quick_search_keywords_zh">Preset keywords (中文)</string>
+    <string name="piko_pref_quick_search_keywords_ko">Preset keywords (한국어)</string>
+    <string name="piko_pref_quick_search_custom_chips">Custom quick chips</string>
+    <string name="piko_pref_quick_search_custom_chips_desc">Extra toggleable chips in quick search, separated by semicolons or new lines</string>
+    <string name="piko_pref_quick_search_early_fallback_date">Early posts fallback date</string>
+    <string name="piko_pref_quick_search_early_fallback_date_desc">Used as until:YYYY-MM-DD when account creation time is unavailable (default: 2022-10-01)</string>
+    <string name="piko_quick_search_input_hint">Custom keywords (optional)</string>
+    <string name="piko_quick_search_keywords_section">Keywords (OR)</string>
+    <string name="piko_quick_search_filters_section">Filters (AND)</string>
+    <string name="piko_quick_search_chip_all_presets">All presets</string>
+    <string name="piko_quick_search_lang_en">EN</string>
+    <string name="piko_quick_search_lang_ja">日本語</string>
+    <string name="piko_quick_search_lang_zh">中文</string>
+    <string name="piko_quick_search_lang_ko">한국어</string>
+    <string name="piko_quick_search_filter_early">Early posts</string>
+    <string name="piko_quick_search_filter_early_year">Early (%s)</string>
+    <string name="piko_quick_search_filter_media">Media only</string>
+    <string name="piko_quick_search_filter_no_reposts">Exclude reposts</string>
+    <string name="piko_quick_search_action_search">Search</string>
+    <string name="piko_quick_search_empty_query">Enter a keyword or select at least one filter</string>
+
+    <!-- Author marker -->
+    <string name="piko_pref_author_marker_section">Known author marker</string>
+    <string name="piko_pref_author_marker_toggle">Mark followed and marked accounts</string>
+    <string name="piko_pref_author_marker_toggle_desc">Appends a marker next to @username on posts, quotes, and profiles for followed or manually marked accounts</string>
+    <string name="piko_pref_author_marker_manage">Manage marked accounts</string>
+    <string name="piko_pref_author_marker_manage_summary">%d marked account(s)</string>
+    <string name="piko_title_author_marker_toggle">Mark / unmark account</string>
+    <string name="piko_author_marker_mark">Mark account</string>
+    <string name="piko_author_marker_unmark">Remove mark</string>
+    <string name="piko_author_marker_added">Marked @%s</string>
+    <string name="piko_author_marker_removed">Unmarked @%s</string>
+    <string name="piko_author_marker_empty">No manually marked accounts</string>
+    <string name="piko_author_marker_clear_all">Clear all</string>
+    <string name="piko_author_marker_remove_item">Remove</string>
+    <string name="piko_author_marker_cleared">Cleared all marked accounts</string>
+
+    <!-- Profile media frequency -->
+    <string name="piko_pref_media_frequency_stat">Show daily media average on profile</string>
+    <string name="piko_pref_media_frequency_stat_desc">Displays average daily media output next to Media count on profile pages</string>
+    <string name="piko_profile_media_frequency_label">Daily Media</string>
+    <string name="piko_profile_media_frequency_per_day">%s/d</string>
+    <string name="piko_profile_media_frequency_every_n_days">1 / %sd</string>
 </resources>

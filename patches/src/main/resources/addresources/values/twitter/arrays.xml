@@ -305,6 +305,9 @@
         <item>@string/piko_title_native_reader_mode</item>
         <item>@string/piko_title_stitch_viewer</item>
         <item>@string/piko_share_image_title</item>
+        <item>@string/piko_title_author_lookup</item>
+        <item>@string/piko_title_quick_search</item>
+        <item>@string/piko_title_author_marker_toggle</item>
         <item>@string/piko_debug</item>
     </string-array>
 
@@ -319,6 +322,9 @@
         <item>piko_title_native_reader_mode</item>
         <item>piko_title_stitch_viewer</item>
         <item>piko_share_image_title</item>
+        <item>piko_title_author_lookup</item>
+        <item>piko_title_quick_search</item>
+        <item>piko_title_author_marker_toggle</item>
         <item>piko_debug</item>
     </string-array>
 

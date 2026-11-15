@@ -124,9 +124,13 @@ public class Utils {
     }
 
     public static String getStringPref(StringSetting setting) {
-        String value = sp.getString(setting.key, setting.defaultValue);
-        if (value.isBlank()) {
-            return setting.defaultValue;
+        return getStringPref(setting.key, setting.defaultValue);
+    }
+
+    public static String getStringPref(String key, String defaultValue) {
+        String value = sp.getString(key, defaultValue);
+        if (value == null || value.isBlank()) {
+            return defaultValue;
         }
         return value;
     }

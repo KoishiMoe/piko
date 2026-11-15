@@ -88,9 +88,29 @@ public class SettingsStatus {
     public static boolean inlineDownloadButton = false;
 
     public static boolean moreInfoOnProfile = false;
+    public static boolean mediaFrequencyStat = false;
+    public static boolean authorExternalLookup = false;
+    public static boolean quickSearch = false;
+    public static boolean authorMarker = false;
 
     public static void moreInfoOnProfile() {
         moreInfoOnProfile = true;
+    }
+
+    public static void mediaFrequencyStat() {
+        mediaFrequencyStat = true;
+    }
+
+    public static void authorExternalLookup() {
+        authorExternalLookup = true;
+    }
+
+    public static void quickSearch() {
+        quickSearch = true;
+    }
+
+    public static void authorMarker() {
+        authorMarker = true;
     }
 
     public static void inlineDownloadButton() {
@@ -442,7 +462,7 @@ public class SettingsStatus {
     }
 
     public static boolean enableNativeSection() {
-        return ( enableNativeShareMenu || nativeDownloader || nativeTranslator || nativeReaderMode || shareImage || stitchViewer);
+        return ( enableNativeShareMenu || nativeDownloader || nativeTranslator || nativeReaderMode || shareImage || stitchViewer || authorExternalLookup || quickSearch);
     }
 
     public static boolean enableDownloadSection() {
@@ -454,7 +474,7 @@ public class SettingsStatus {
     }
 
     public static boolean enableCustomisationSection() {
-        return (moreInfoOnProfile || appIconCustomisation || notificationTabCustomisation || searchTabCustomisation || typeaheadCustomisation || exploreTabCustomisation || customPostFontSize || inlineBarCustomisation || navBarCustomisation || sideBarCustomisation || profileTabCustomisation || timelineTabCustomisation || defaultReplySortFilter);
+        return (moreInfoOnProfile || mediaFrequencyStat || authorMarker || appIconCustomisation || notificationTabCustomisation || searchTabCustomisation || typeaheadCustomisation || exploreTabCustomisation || customPostFontSize || inlineBarCustomisation || navBarCustomisation || sideBarCustomisation || profileTabCustomisation || timelineTabCustomisation || defaultReplySortFilter);
     }
     public static boolean loggingSection() {
         return (serverResponseLogging || serverResponseLoggingOverwriteFile);

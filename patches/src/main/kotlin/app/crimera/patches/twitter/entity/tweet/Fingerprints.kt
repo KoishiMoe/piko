@@ -39,6 +39,16 @@ internal object TweetUserIdFingerprint : Fingerprint(
     name = "getTweetUserId",
 )
 
+internal object TweetAuthorFriendshipFingerprint : Fingerprint(
+    definingClass = ENTITY_TWEET_DEFINING_CLASS,
+    name = "getTweetAuthorFriendship",
+)
+
+internal object TweetOriginalAuthorIdFingerprint : Fingerprint(
+    definingClass = ENTITY_TWEET_DEFINING_CLASS,
+    name = "getTweetOriginalAuthorId",
+)
+
 internal object TweetExtMediaEntitiesListFingerprint : Fingerprint(
     definingClass = ENTITY_TWEET_DEFINING_CLASS,
     name = "getExtendedMediaEntities",

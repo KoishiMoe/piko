@@ -14,6 +14,10 @@ public class TweetStatView extends RelativeLayout {
 
     }
 
+    public void a(String str, boolean z){
+
+    }
+
     public void setVisibility(int visibility){
 
     }

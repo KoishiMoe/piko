@@ -16,7 +16,10 @@ import android.text.TextUtils;
 import com.twitter.ui.widget.LegacyTwitterPreferenceCategory;
 
 import java.util.List;
+import java.util.Locale;
 
+import app.morphe.extension.crimera.settings.StringSetting;
+import app.morphe.extension.twitter.patches.author.AuthorMarkerHelper;
 import app.morphe.extension.twitter.settings.SettingsSearchMatcher.SearchMatch;
 import app.morphe.extension.twitter.settings.SettingsSearchMatcher.SearchResult;
 import app.morphe.extension.twitter.settings.widgets.*;
@@ -560,7 +563,13 @@ public class ScreenBuilder {
             );
         }
 
-        if (SettingsStatus.nativeTranslator) {
+        if (SettingsStatus.enableNativeShareMenu
+                || SettingsStatus.nativeTranslator
+                || SettingsStatus.authorExternalLookup
+                || SettingsStatus.quickSearch
+                || SettingsStatus.authorMarker
+                || SettingsStatus.stitchViewer
+                || SettingsStatus.shareImage) {
             category = preferenceCategory(str("piko_title_native_share_menu"));
 
             addPreference(category,
@@ -576,6 +585,82 @@ public class ScreenBuilder {
                             str("piko_native_share_menu_items_to_hide"),
                             "",
                             Settings.NATIVE_SHARE_MENU_ITEMS_TO_HIDE
+                    )
+            );
+
+            if (SettingsStatus.authorExternalLookup) {
+                addPreference(category,
+                        helper.switchPreference(
+                                str("piko_pref_author_lookup_toggle"),
+                                str("piko_pref_author_lookup_toggle_desc"),
+                                Settings.NATIVE_AUTHOR_LOOKUP
+                        )
+                );
+            }
+        }
+
+        if (SettingsStatus.quickSearch) {
+            category = preferenceCategory(str("piko_title_quick_search"));
+
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_quick_search_toggle"),
+                            str("piko_pref_quick_search_toggle_desc"),
+                            Settings.NATIVE_QUICK_SEARCH
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_early_fallback_date"),
+                            str("piko_pref_quick_search_early_fallback_date_desc"),
+                            Pref.quickSearchEarlyFallbackDate(),
+                            Settings.QUICK_SEARCH_EARLY_FALLBACK_DATE
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_keywords_en"),
+                            null,
+                            Pref.quickSearchKeywordsEn(),
+                            Settings.QUICK_SEARCH_KEYWORDS_EN
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_keywords_ja"),
+                            null,
+                            Pref.quickSearchKeywordsJa(),
+                            Settings.QUICK_SEARCH_KEYWORDS_JA
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_keywords_zh"),
+                            null,
+                            Pref.quickSearchKeywordsZh(),
+                            Settings.QUICK_SEARCH_KEYWORDS_ZH
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_keywords_ko"),
+                            null,
+                            Pref.quickSearchKeywordsKo(),
+                            Settings.QUICK_SEARCH_KEYWORDS_KO
+                    )
+            );
+
+            addPreference(category,
+                    createSummaryEditTextPreference(
+                            str("piko_pref_quick_search_custom_chips"),
+                            str("piko_pref_quick_search_custom_chips_desc"),
+                            Pref.quickSearchCustomChips(),
+                            Settings.QUICK_SEARCH_CUSTOM_CHIPS
                     )
             );
         }
@@ -899,6 +984,77 @@ public class ScreenBuilder {
             );
         }
 
+        if (SettingsStatus.mediaFrequencyStat || SettingsStatus.moreInfoOnProfile) {
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_media_frequency_stat"),
+                            str("piko_pref_media_frequency_stat_desc"),
+                            Settings.PROFILE_MEDIA_FREQUENCY
+                    )
+            );
+        }
+
+        if (SettingsStatus.authorMarker) {
+            LegacyTwitterPreferenceCategory markerCategory =
+                    buildCategory ? category : preferenceCategory(str("piko_pref_author_marker_section"));
+
+            addPreference(markerCategory,
+                    helper.switchPreference(
+                            str("piko_pref_author_marker_toggle"),
+                            str("piko_pref_author_marker_toggle_desc"),
+                            Settings.AUTHOR_MARKER
+                    )
+            );
+
+            addPreference(markerCategory,
+                    helper.buttonPreference(
+                            str("piko_pref_author_marker_manage"),
+                            String.format(
+                                    Locale.getDefault(),
+                                    str("piko_pref_author_marker_manage_summary"),
+                                    AuthorMarkerHelper.getMarkedCount()
+                            ),
+                            Settings.AUTHOR_MARKER_MANAGE
+                    )
+            );
+        }
+
+    }
+
+    private Preference createSummaryEditTextPreference(
+            String title,
+            @Nullable String description,
+            String currentValue,
+            StringSetting setting) {
+        Preference pref = helper.editTextPreference(
+                title,
+                formatEditTextSummary(description, currentValue),
+                setting
+        );
+        Preference.OnPreferenceChangeListener baseListener = pref.getOnPreferenceChangeListener();
+        pref.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (baseListener != null && !baseListener.onPreferenceChange(preference, newValue)) {
+                return false;
+            }
+            String text = newValue != null ? newValue.toString().trim() : "";
+            if (text.isEmpty()) {
+                text = setting.defaultValue;
+            }
+            preference.setSummary(formatEditTextSummary(description, text));
+            return true;
+        });
+        return pref;
+    }
+
+    private static String formatEditTextSummary(@Nullable String description, @Nullable String value) {
+        String cleanValue = value != null ? value.trim() : "";
+        if (TextUtils.isEmpty(description)) {
+            return cleanValue;
+        }
+        if (TextUtils.isEmpty(cleanValue)) {
+            return description;
+        }
+        return description + "\n" + cleanValue;
     }
 
     public void buildFontSection(boolean buildCategory){

@@ -17,8 +17,11 @@ import static app.morphe.extension.shared.StringRef.str;
 import app.morphe.extension.twitter.entity.Debug;
 import app.morphe.extension.twitter.entity.TwitterUser;
 import app.morphe.extension.twitter.Pref;
+import app.morphe.extension.twitter.patches.nativeFeatures.search.UserCreationLookup;
 
 import com.twitter.ui.tweet.TweetStatView;
+
+import java.util.Locale;
 
 public class MoreProfileInfo {
 
@@ -46,13 +49,92 @@ public class MoreProfileInfo {
             tweetStatView.setVisibility(View.VISIBLE);
     }
 
+    private static void cacheCreationTime(TwitterUser twitterUserEntity) {
+        try {
+            long userId = twitterUserEntity.getId();
+            String username = twitterUserEntity.getUsername();
+            long createdAt = twitterUserEntity.getCreatedAt();
+            UserCreationLookup.cacheUser(userId, username, createdAt);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+        }
+    }
+
+    private static String formatDecimalTrimmed(double value) {
+        String s = String.format(Locale.US, "%.1f", value);
+        if (s.endsWith(".0")) {
+            return s.substring(0, s.length() - 2);
+        }
+        return s;
+    }
+
+    private static String formatMediaFrequency(int mediaCount, long createdAtMs) {
+        if (mediaCount <= 0) {
+            return "0";
+        }
+        double elapsedDays = Math.max(1.0, (System.currentTimeMillis() - createdAtMs) / 86_400_000.0);
+        double avgPerDay = mediaCount / elapsedDays;
+        if (avgPerDay >= 1.0) {
+            String valueStr = avgPerDay >= 100.0
+                    ? String.format(Locale.US, "%.0f", avgPerDay)
+                    : formatDecimalTrimmed(avgPerDay);
+            return str("piko_profile_media_frequency_per_day", valueStr);
+        }
+        double daysPerMedia = elapsedDays / mediaCount;
+        String intervalStr = daysPerMedia >= 10.0
+                ? String.valueOf(Math.round(daysPerMedia))
+                : formatDecimalTrimmed(daysPerMedia);
+        return str("piko_profile_media_frequency_every_n_days", intervalStr);
+    }
+
+    private static void bindMediaFrequencyStat(View rootView, TwitterUser twitterUserEntity) {
+        try {
+            int targetId = ResourceUtils.getIdentifier(ResourceType.ID, "media_frequency_stat");
+            if (targetId == 0) {
+                return;
+            }
+            View rawView = rootView.findViewById(targetId);
+            if (!(rawView instanceof TweetStatView tweetStatView)) {
+                return;
+            }
+
+            if (!Pref.enableMediaFrequencyStat()) {
+                tweetStatView.setVisibility(View.GONE);
+                return;
+            }
+
+            long createdAtMs = UserCreationLookup.normalizeEpochMs(twitterUserEntity.getCreatedAt());
+            if (createdAtMs <= 0L) {
+                tweetStatView.setVisibility(View.GONE);
+                return;
+            }
+
+            int mediaCount = Math.max(0, twitterUserEntity.getMediaCount());
+            String formattedValue = formatMediaFrequency(mediaCount, createdAtMs);
+
+            tweetStatView.setOnTouchListener((v, event) -> true);
+            tweetStatView.setOnClickListener(v -> {});
+            tweetStatView.setName(str("piko_profile_media_frequency_label"));
+            tweetStatView.a(formattedValue, false);
+            tweetStatView.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+        }
+    }
+
     public static void addTweetStatView(Object headerComponent, Object TwitterUserObject){
         try {
-            if(Pref.moreInfoOnProfile()) {
-                TwitterUser twitterUserEntity = new TwitterUser(TwitterUserObject);
-                Debug headerComponentEntity = new Debug(headerComponent);
+            TwitterUser twitterUserEntity = new TwitterUser(TwitterUserObject);
+            cacheCreationTime(twitterUserEntity);
 
-                View rootView = (View) headerComponentEntity.getField(headerComponentViewFieldName());
+            Debug headerComponentEntity = new Debug(headerComponent);
+            View rootView = (View) headerComponentEntity.getField(headerComponentViewFieldName());
+
+            if (rootView != null) {
+                bindMediaFrequencyStat(rootView, twitterUserEntity);
+            }
+
+            if(Pref.moreInfoOnProfile()) {
                 Context context = (Context) headerComponentEntity.getField(headerComponentContextFieldName());
 
                 int count = twitterUserEntity.getFastFollowersCount();
@@ -83,8 +165,10 @@ public class MoreProfileInfo {
 
     public static String addUserId(String userName, Object TwitterUserObject){
         try{
+            TwitterUser twitterUserEntity = new TwitterUser(TwitterUserObject);
+            cacheCreationTime(twitterUserEntity);
+
             if(Pref.moreInfoOnProfile()) {
-                TwitterUser twitterUserEntity = new TwitterUser(TwitterUserObject);
                 long userId = twitterUserEntity.getId();
 
                 String userIdstr = str("piko_pref_account_id", String.valueOf(userId));

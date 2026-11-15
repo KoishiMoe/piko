@@ -441,4 +441,60 @@ https://github.com/crimera/piko/blob/dev/docs/about_login_token_patch.md
     <string name="piko_stitch_save_success">已保存到 Pictures/Twitter/%s</string>
     <string name="piko_stitch_save_downscaled">图片尺寸超过内存上限，已自动缩放至 %d%% 保存</string>
     <string name="piko_stitch_save_failed">保存拼接图片失败: %s</string>
+
+    <!-- Author external lookup -->
+    <string name="piko_title_author_lookup">在 Danbooru 检索作者</string>
+    <string name="piko_pref_author_lookup_toggle">外站作者检索入口</string>
+    <string name="piko_pref_author_lookup_toggle_desc">在分享底栏添加快捷入口，点击后通过浏览器打开该作者的外部检索页面</string>
+    <string name="piko_author_lookup_no_username">无法获取作者用户名</string>
+
+    <!-- Quick search -->
+    <string name="piko_title_quick_search">快速检索</string>
+    <string name="piko_pref_quick_search_toggle">启用快速检索构建器</string>
+    <string name="piko_pref_quick_search_toggle_desc">在帖子分享底栏添加交互式条件构建面板，用于检索该账号的过往帖子</string>
+    <string name="piko_pref_quick_search_keywords_en">预设关键词 (EN)</string>
+    <string name="piko_pref_quick_search_keywords_ja">预设关键词 (日本語)</string>
+    <string name="piko_pref_quick_search_keywords_zh">预设关键词 (中文)</string>
+    <string name="piko_pref_quick_search_keywords_ko">预设关键词 (한국어)</string>
+    <string name="piko_pref_quick_search_custom_chips">自定义快捷词条</string>
+    <string name="piko_pref_quick_search_custom_chips_desc">快速检索面板中展示的自定义快捷选项，多个词条用分号或换行分隔</string>
+    <string name="piko_pref_quick_search_early_fallback_date">早期发布默认截止日期</string>
+    <string name="piko_pref_quick_search_early_fallback_date_desc">当无法读取账号注册时间时使用的 until:YYYY-MM-DD 回退日期（默认 2022-10-01）</string>
+    <string name="piko_quick_search_input_hint">自定义关键词（可选）</string>
+    <string name="piko_quick_search_keywords_section">关键词组 (OR)</string>
+    <string name="piko_quick_search_filters_section">限定条件 (AND)</string>
+    <string name="piko_quick_search_chip_all_presets">全选预设</string>
+    <string name="piko_quick_search_lang_en">EN</string>
+    <string name="piko_quick_search_lang_ja">日本語</string>
+    <string name="piko_quick_search_lang_zh">中文</string>
+    <string name="piko_quick_search_lang_ko">한국어</string>
+    <string name="piko_quick_search_filter_early">早期发布</string>
+    <string name="piko_quick_search_filter_early_year">早期 (%s 年)</string>
+    <string name="piko_quick_search_filter_media">仅含媒体</string>
+    <string name="piko_quick_search_filter_no_reposts">排除转推</string>
+    <string name="piko_quick_search_action_search">搜索</string>
+    <string name="piko_quick_search_empty_query">请输入关键词或至少选择一个检索条件</string>
+
+    <!-- Author marker -->
+    <string name="piko_pref_author_marker_section">已知作者标记</string>
+    <string name="piko_pref_author_marker_toggle">标记已关注及手动标记的作者</string>
+    <string name="piko_pref_author_marker_toggle_desc">在时间线、推文详情、引用贴及个人主页中，为已关注或手动标记的作者 @用户名 旁追加标记符号</string>
+    <string name="piko_pref_author_marker_manage">管理已标记账号</string>
+    <string name="piko_pref_author_marker_manage_summary">当前已手动标记 %d 个账号</string>
+    <string name="piko_title_author_marker_toggle">标记 / 取消标记账号</string>
+    <string name="piko_author_marker_mark">标记此账号</string>
+    <string name="piko_author_marker_unmark">移除标记</string>
+    <string name="piko_author_marker_added">已标记 @%s</string>
+    <string name="piko_author_marker_removed">已移除 @%s 的标记</string>
+    <string name="piko_author_marker_empty">暂无手动标记的账号</string>
+    <string name="piko_author_marker_clear_all">全部清空</string>
+    <string name="piko_author_marker_remove_item">移除</string>
+    <string name="piko_author_marker_cleared">已清空全部手动标记</string>
+
+    <!-- Profile media frequency -->
+    <string name="piko_pref_media_frequency_stat">个人主页显示日均媒体发布量</string>
+    <string name="piko_pref_media_frequency_stat_desc">在个人主页媒体数量旁显示账号自创建以来的日均媒体发布频率</string>
+    <string name="piko_profile_media_frequency_label">日均媒体</string>
+    <string name="piko_profile_media_frequency_per_day">%s/天</string>
+    <string name="piko_profile_media_frequency_every_n_days">每 %s 天 1 条</string>
 </resources>

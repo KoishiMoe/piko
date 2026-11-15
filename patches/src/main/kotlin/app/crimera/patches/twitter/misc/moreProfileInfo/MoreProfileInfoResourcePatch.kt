@@ -9,7 +9,7 @@ package app.crimera.patches.twitter.misc.moreProfileInfo
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.util.findElementByAttributeValueOrThrow
 
-internal val fieldList = listOf("fast_follower_stat", "tweet_stat", "article_stat", "media_stat", "likes_stat")
+internal val fieldList = listOf("fast_follower_stat", "tweet_stat", "article_stat", "media_stat", "media_frequency_stat", "likes_stat")
 
 internal val moreProfileInfoResourcePatch =
     resourcePatch {

@@ -64,6 +64,22 @@ public class TwitterUser extends Debug {
         return fieldNullCheck("getLastUpdatedAt", Long.class);
     }
 
+    public long getCreatedAt() throws Exception {
+        return fieldNullCheck("getCreatedAt", Long.class);
+    }
+
+    public int getFriendship() throws Exception {
+        return fieldNullCheck("getFriendship", Integer.class);
+    }
+
+    public boolean isFollowing() throws Exception {
+        return (getFriendship() & 0x1) != 0;
+    }
+
+    public String getUsername() throws Exception {
+        return fieldNullCheck("getUsername", String.class);
+    }
+
     public long getId() throws Exception {
         return (long) this.getMethod("getId");
     }

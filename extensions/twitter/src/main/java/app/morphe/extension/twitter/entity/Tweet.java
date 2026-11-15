@@ -46,6 +46,20 @@ public class Tweet extends Debug {
         return (Long) super.getMethod("userIdMethod");
     }
 
+    public long getTweetOriginalAuthorId() throws Exception {
+        Object res = super.getMethod("originalAuthorIdMethod");
+        return res instanceof Long ? (Long) res : -1L;
+    }
+
+    public int getTweetAuthorFriendship() throws Exception {
+        Object res = super.getMethod("friendshipMethod");
+        return res instanceof Integer ? (Integer) res : 0;
+    }
+
+    public boolean isFollowingAuthor() throws Exception {
+        return (getTweetAuthorFriendship() & 0x1) != 0;
+    }
+
     private ArrayList<ExtMediaEntities> getExtendedMediaEntities() throws Exception {
         ArrayList<ExtMediaEntities> extMediaEntitiesArrayList = new ArrayList();
 

@@ -44,6 +44,9 @@ val twitterUserEntity =
                     GetLikesCountExtension,
                     GetArticleCountExtension,
                     GetLastUpdatedAtExtension,
+                    GetCreatedAtExtension,
+                    GetFriendshipExtension,
+                    GetUsernameExtension,
                 )
 
             TwitterUserToStringFingerprint.apply {

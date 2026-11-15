@@ -512,5 +512,45 @@ public class Pref {
         return Utils.getStringPref(Settings.NATIVE_STITCH_DIRECTION);
     }
 
+    public static boolean enableAuthorExternalLookup() {
+        return Utils.getBooleanPref(Settings.NATIVE_AUTHOR_LOOKUP) && SettingsStatus.authorExternalLookup;
+    }
+
+    public static boolean enableQuickSearch() {
+        return Utils.getBooleanPref(Settings.NATIVE_QUICK_SEARCH) && SettingsStatus.quickSearch;
+    }
+
+    public static String quickSearchKeywordsEn() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_KEYWORDS_EN);
+    }
+
+    public static String quickSearchKeywordsJa() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_KEYWORDS_JA);
+    }
+
+    public static String quickSearchKeywordsZh() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_KEYWORDS_ZH);
+    }
+
+    public static String quickSearchKeywordsKo() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_KEYWORDS_KO);
+    }
+
+    public static String quickSearchCustomChips() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_CUSTOM_CHIPS);
+    }
+
+    public static String quickSearchEarlyFallbackDate() {
+        return Utils.getStringPref(Settings.QUICK_SEARCH_EARLY_FALLBACK_DATE);
+    }
+
+    public static boolean enableAuthorMarker() {
+        return Utils.getBooleanPref(Settings.AUTHOR_MARKER) && SettingsStatus.authorMarker;
+    }
+
+    public static boolean enableMediaFrequencyStat() {
+        return Utils.getBooleanPref(Settings.PROFILE_MEDIA_FREQUENCY) && SettingsStatus.mediaFrequencyStat;
+    }
+
     //end
 }

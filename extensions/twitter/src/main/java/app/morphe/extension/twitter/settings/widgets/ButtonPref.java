@@ -23,8 +23,11 @@ import app.morphe.extension.shared.ResourceType;
 import app.morphe.extension.shared.ResourceUtils;
 import app.morphe.extension.crimera.PikoUtils;
 
+import java.util.Locale;
+
 import app.morphe.extension.twitter.patches.Changelogs;
 import app.morphe.extension.twitter.patches.DatabasePatch;
+import app.morphe.extension.twitter.patches.author.AuthorMarkerHelper;
 import app.morphe.extension.twitter.patches.customise.appIcon.IconSelectorFragment;
 import app.morphe.extension.twitter.patches.customise.font.FontPickerFragment;
 import app.morphe.extension.twitter.patches.customise.font.UpdateFont;
@@ -146,6 +149,15 @@ public class ButtonPref extends Preference {
                         PikoUtils.openDefaultLinks();
                     } else if (key.equals(Settings.CHANGELOGS_TITLE)){
                         Changelogs.showChangelogDialog(context);
+                    } else if (key.equals(Settings.AUTHOR_MARKER_MANAGE)) {
+                        AuthorMarkerHelper.showManageMarkedAccountsDialog(
+                                context,
+                                () -> preference.setSummary(String.format(
+                                        Locale.getDefault(),
+                                        str("piko_pref_author_marker_manage_summary"),
+                                        AuthorMarkerHelper.getMarkedCount()
+                                ))
+                        );
                     } else {
                         ActivityHook.startActivity(key);
                     }

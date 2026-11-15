@@ -75,6 +75,14 @@ public class Settings {
     public static final StringSetting NATIVE_STITCH_DIRECTION = new StringSetting("native_stitch_direction", "vertical");
     public static final BooleanSetting NATIVE_SHARE_MENU = new BooleanSetting("native_share_menu", true);
     public static final StringSetting NATIVE_SHARE_MENU_ITEMS_TO_HIDE = new StringSetting("native_share_menu_to_hide", "");
+    public static final BooleanSetting NATIVE_AUTHOR_LOOKUP = new BooleanSetting("native_author_lookup", true);
+    public static final BooleanSetting NATIVE_QUICK_SEARCH = new BooleanSetting("native_quick_search", true);
+    public static final StringSetting QUICK_SEARCH_KEYWORDS_EN = new StringSetting("quick_search_keywords_en", "wip rough sketch lineart doodle draft");
+    public static final StringSetting QUICK_SEARCH_KEYWORDS_JA = new StringSetting("quick_search_keywords_ja", "ラフ 下書き 線画 落書き 進捗 メイキング");
+    public static final StringSetting QUICK_SEARCH_KEYWORDS_ZH = new StringSetting("quick_search_keywords_zh", "草稿 线稿 过程 摸鱼 涂鸦");
+    public static final StringSetting QUICK_SEARCH_KEYWORDS_KO = new StringSetting("quick_search_keywords_ko", "러프 선화 낙서 과정");
+    public static final StringSetting QUICK_SEARCH_CUSTOM_CHIPS = new StringSetting("quick_search_custom_chips", "");
+    public static final StringSetting QUICK_SEARCH_EARLY_FALLBACK_DATE = new StringSetting("quick_search_early_fallback_date", "2022-10-01");
 
     public static final BooleanSetting TIMELINE_DISABLE_AUTO_SCROLL = new BooleanSetting("timeline_disable_auto_scroll", true);
     public static final BooleanSetting TIMELINE_SHOW_SOURCE_LABEL = new BooleanSetting("timeline_show_source_label", false);
@@ -116,6 +124,11 @@ public class Settings {
     public static final StringSetting CUSTOM_SEARCH_TYPE_AHEAD = new StringSetting("customisation_search_type_ahead", "");
     public static final StringSetting CUSTOM_POST_FONT_SIZE = new StringSetting("customisation_post_font_size", String.valueOf(ResourceUtils.getDimension("font_size_normal")));
     public static final BooleanSetting MORE_INFO_ON_PROFILE = new BooleanSetting("more_info_on_profile", true);
+    public static final BooleanSetting PROFILE_MEDIA_FREQUENCY = new BooleanSetting("profile_media_frequency", true);
+    public static final BooleanSetting AUTHOR_MARKER = new BooleanSetting("author_marker", true);
+    public static final String AUTHOR_MARKER_MANAGE = "author_marker_manage";
+    public static final String MARKED_AUTHOR_IDS_KEY = "marked_author_ids";
+    public static final String MARKED_AUTHOR_HANDLES_KEY = "marked_author_handles";
 
     public static final StringSetting LAST_CHANGELOG_VERSION = new StringSetting("last_changelog_version", "0");
     public static final StringSetting LAST_CHANGELOG = new StringSetting("last_changelog", "0");

@@ -16,6 +16,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 val tweetEntityPatch =
@@ -98,5 +99,50 @@ val tweetEntityPatch =
                     TweetInfoFingerprint.changeFirstString(infoField)
                 }
             }
+
+            val coreUserType =
+                tweetObjectMethods
+                    .firstOrNull { it.name == userNameMethod.name && it.parameterTypes.isEmpty() }
+                    ?.implementation
+                    ?.instructions
+                    ?.drop(1)
+                    ?.firstOrNull()
+                    ?.getReference<FieldReference>()
+                    ?.type
+                    ?: throw PatchException("coreUserType not found")
+
+            val getAuthorFriendshipMethod =
+                tweetObjectMethods.firstOrNull { methodDef ->
+                    val insns = methodDef.implementation?.instructions?.toList() ?: return@firstOrNull false
+                    methodDef.parameterTypes.isEmpty() &&
+                        methodDef.returnType == "I" &&
+                        insns.map { it.opcode } ==
+                        listOf(
+                            Opcode.IGET_OBJECT,
+                            Opcode.IGET_OBJECT,
+                            Opcode.IGET,
+                            Opcode.RETURN,
+                        ) &&
+                        insns[2].getReference<FieldReference>()?.definingClass == coreUserType
+                } ?: throw PatchException("getAuthorFriendshipMethod not found")
+            TweetAuthorFriendshipFingerprint.changeFirstString(getAuthorFriendshipMethod.name)
+
+            val getOriginalAuthorIdMethod =
+                tweetObjectMethods.firstOrNull { methodDef ->
+                    val insns = methodDef.implementation?.instructions?.toList() ?: return@firstOrNull false
+                    methodDef.parameterTypes.isEmpty() &&
+                        methodDef.returnType == "J" &&
+                        insns.map { it.opcode } ==
+                        listOf(
+                            Opcode.IGET_OBJECT,
+                            Opcode.IGET_OBJECT,
+                            Opcode.IGET_OBJECT,
+                            Opcode.INVOKE_VIRTUAL,
+                            Opcode.MOVE_RESULT_WIDE,
+                            Opcode.RETURN_WIDE,
+                        ) &&
+                        insns[2].getReference<FieldReference>()?.definingClass == coreUserType
+                } ?: throw PatchException("getOriginalAuthorIdMethod not found")
+            TweetOriginalAuthorIdFingerprint.changeFirstString(getOriginalAuthorIdMethod.name)
         }
     }

@@ -86,6 +86,25 @@ public class BottomSheetBuilder {
             actions.add(new BottomSheetAction<>("ic_vector_share",str(itemKey),t -> ShareImageHandler.shareAsImage(context, tweetObject,0)));
         }
 
+        itemKey = "piko_title_author_lookup";
+        if(Pref.enableAuthorExternalLookup() && !itemsToHide.contains(itemKey)){
+            actions.add(new BottomSheetAction<>("ic_vector_globe_stroke",str(itemKey),t -> AuthorLookupHelper.openExternalAuthorLookup(context, tweetObject)));
+        }
+
+        itemKey = "piko_title_quick_search";
+        if(Pref.enableQuickSearch() && !itemsToHide.contains(itemKey)){
+            actions.add(new BottomSheetAction<>("ic_vector_search",str(itemKey),t -> app.morphe.extension.twitter.patches.nativeFeatures.search.QuickSearchHelper.openFromTweet(context, tweetObject)));
+        }
+
+        itemKey = "piko_title_author_marker_toggle";
+        if(Pref.enableAuthorMarker() && !itemsToHide.contains(itemKey)
+                && !app.morphe.extension.twitter.patches.author.AuthorMarkerHelper.isSelfTweetAuthor(tweetObject)){
+            boolean isMarked = app.morphe.extension.twitter.patches.author.AuthorMarkerHelper.isTweetAuthorManuallyMarked(tweetObject);
+            String markerLabel = str(isMarked ? "piko_author_marker_unmark" : "piko_author_marker_mark");
+            String markerIcon = isMarked ? "ic_vector_star" : "ic_vector_star_stroke";
+            actions.add(new BottomSheetAction<>(markerIcon, markerLabel, t -> app.morphe.extension.twitter.patches.author.AuthorMarkerHelper.toggleFromTweet(context, tweetObject)));
+        }
+
         itemKey = "piko_debug";
         if(Pref.pikoDebug() && !itemsToHide.contains(itemKey)){
             actions.add(new BottomSheetAction<>("ic_vector_flask_stroke",str(itemKey),t -> ObjectBrowser.browseObject(context, tweet)));

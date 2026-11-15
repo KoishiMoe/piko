@@ -103,5 +103,6 @@ val moreProfileInfoPatch =
             }
 
             enableSettings("moreInfoOnProfile")
+            enableSettings("mediaFrequencyStat")
         }
     }

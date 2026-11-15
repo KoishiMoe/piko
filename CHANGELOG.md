@@ -1,3 +1,9 @@
+## [3.12.1](https://github.com/KoishiMoe/piko/compare/v3.12.0...v3.12.1) (2026-11-15)
+
+### 🐛 Bug Fixes
+
+* **twitter:** fix stitch seam hairlines and multi-image badge hook ([eb96dcf](https://github.com/KoishiMoe/piko/commit/eb96dcffb609bd63a313acdbd7241f5b603135de))
+
 ## [3.12.0](https://github.com/KoishiMoe/piko/compare/v3.11.1...v3.12.0) (2026-11-15)
 
 ### 🐛 Bug Fixes

@@ -1131,6 +1131,26 @@ public class ScreenBuilder {
             );
         }
 
+        if (SettingsStatus.fixGalleryBlackScreen) {
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_fix_gallery_black_screen"),
+                            str("piko_pref_fix_gallery_black_screen_desc"),
+                            Settings.FIX_GALLERY_BLACK_SCREEN
+                    )
+            );
+        }
+
+        if (SettingsStatus.galleryPageCounter) {
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_gallery_page_counter"),
+                            str("piko_pref_gallery_page_counter_desc"),
+                            Settings.GALLERY_PAGE_COUNTER
+                    )
+            );
+        }
+
     }
 
     public void buildLoggingSection(boolean buildCategory) {

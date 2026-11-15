@@ -416,4 +416,10 @@ https://github.com/crimera/piko/blob/dev/docs/about_login_token_patch.md
     <string name="piko_login_token_import_failed_already_exist">添加账户失败 (可能已存在)</string>
     <string name="piko_ok">确定</string>
     <string name="piko_cancel">取消</string>
+
+    <!-- Gallery enhancements -->
+    <string name="piko_pref_fix_gallery_black_screen">修复大图灯箱黑屏</string>
+    <string name="piko_pref_fix_gallery_black_screen_desc">修复多图贴文在灯箱滑动到第10张及之后图片时出现黑屏及点击/缩放失效的问题</string>
+    <string name="piko_pref_gallery_page_counter">显示灯箱页码指示器</string>
+    <string name="piko_pref_gallery_page_counter_desc">在媒体灯箱顶部工具栏显示当前页码（例如 1 / 20）</string>
 </resources>

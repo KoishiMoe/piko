@@ -93,6 +93,8 @@ public class Settings {
     public static final BooleanSetting TIMELINE_HIDE_NAVBAR_BADGE = new BooleanSetting("timeline_hide_navbar_badge", false);
     public static final BooleanSetting TIMELINE_HIDE_POST_INLINE_METRICS = new BooleanSetting("timeline_hide_post_inline_metrics", false);
     public static final BooleanSetting TIMELINE_HIDE_POST_DETAILED_METRICS = new BooleanSetting("timeline_hide_post_detailed_metrics", false);
+    public static final BooleanSetting FIX_GALLERY_BLACK_SCREEN = new BooleanSetting("fix_gallery_black_screen", true);
+    public static final BooleanSetting GALLERY_PAGE_COUNTER = new BooleanSetting("gallery_page_counter", true);
 
     public static final BooleanSetting PREMIUM_UNDO_POSTS = new BooleanSetting("premium_undo_posts", false);
     public static final BooleanSetting PREMIUM_NAVBAR = new BooleanSetting("premium_custom_navbar", true);

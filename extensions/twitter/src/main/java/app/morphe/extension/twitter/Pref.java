@@ -492,5 +492,13 @@ public class Pref {
         return getList(Settings.NATIVE_SHARE_MENU_ITEMS_TO_HIDE.key);
     }
 
+    public static boolean fixGalleryBlackScreen() {
+        return Utils.getBooleanPref(Settings.FIX_GALLERY_BLACK_SCREEN) && SettingsStatus.fixGalleryBlackScreen;
+    }
+
+    public static boolean galleryPageCounter() {
+        return Utils.getBooleanPref(Settings.GALLERY_PAGE_COUNTER) && SettingsStatus.galleryPageCounter;
+    }
+
     //end
 }

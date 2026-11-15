@@ -408,9 +408,19 @@ public class SettingsStatus {
         externalDownloader = true;
     }
 
+    public static boolean fixGalleryBlackScreen = false;
+    public static void fixGalleryBlackScreen() {
+        fixGalleryBlackScreen = true;
+    }
+
+    public static boolean galleryPageCounter = false;
+    public static void galleryPageCounter() {
+        galleryPageCounter = true;
+    }
+
 
     public static boolean enableTimelineSection() {
-        return ( hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
+        return ( fixGalleryBlackScreen || galleryPageCounter || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
     }
 
     public static boolean enableMiscSection() {

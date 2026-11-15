@@ -522,6 +522,7 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_author_marker_clear_all">Clear all</string>
     <string name="piko_author_marker_remove_item">Remove</string>
     <string name="piko_author_marker_cleared">Cleared all marked accounts</string>
+    <string name="piko_author_marker_badge_desc">Marked account</string>
 
     <!-- Profile media frequency -->
     <string name="piko_pref_media_frequency_stat">Show daily media average on profile</string>

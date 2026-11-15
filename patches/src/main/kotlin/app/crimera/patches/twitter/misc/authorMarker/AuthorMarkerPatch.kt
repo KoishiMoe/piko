@@ -14,13 +14,12 @@ import app.crimera.patches.twitter.misc.settings.settingsPatch
 import app.crimera.patches.twitter.misc.shareMenu.nativeShareMenu.nativeShareMenuPatch
 import app.crimera.patches.twitter.utils.Constants.COMPATIBILITY_X
 import app.crimera.patches.twitter.utils.enableSettings
+import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.registersUsed
 import app.morphe.util.indexOfFirstInstruction
 import com.android.tools.smali.dexlib2.Opcode
@@ -42,42 +41,48 @@ val authorMarkerPatch =
         dependsOn(settingsPatch, entityGenerator, twitterUserEntity, nativeShareMenuPatch)
 
         execute {
-            // 1. Timeline tweet header & focal tweet header
-            fun hookHeaderBinder(method: MutableMethod) {
-                method.addInstructions(
-                    0,
-                    """
-                    move-object/from16 v0, p3
-                    move-object/from16 v1, p1
-                    invoke-static {v0, v1}, $HELPER_CLASS->formatTweetUsername(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;
-                    move-result-object v0
-                    move-object/from16 p3, v0
-                    """.trimIndent(),
-                )
-            }
-
-            hookHeaderBinder(TweetHeaderBindFingerprint.method)
-            hookHeaderBinder(FocalTweetHeaderBindFingerprint.method)
-
-            // 2. Quoted tweet header inside QuoteView
-            with(QuoteViewBindFingerprint) {
-                val uCallIndex = instructionMatches[0].index
-                val moveUserIndex = instructionMatches[1].index
-                val userReg = instructionMatches[1].instruction.registersUsed[0]
-                val tweetInvokeIndex = uCallIndex - 2
-                val tweetInvoke = method.getInstruction(tweetInvokeIndex)
-                if (tweetInvoke.opcode != Opcode.INVOKE_VIRTUAL) {
-                    throw PatchException("Expected quoted tweet invoke-virtual before u.i")
+            // 1. Timeline, focal detail, and quoted tweet headers: inject marker into TweetHeaderView badge slot
+            fun injectTweetBadgeHook(
+                fp: Fingerprint,
+                badgeCallMatchIndex: Int,
+                badgeMoveMatchIndex: Int,
+            ) {
+                with(fp) {
+                    val tweetReg = instructionMatches[badgeCallMatchIndex].instruction.registersUsed[0]
+                    val moveIndex = instructionMatches[badgeMoveMatchIndex].index
+                    val badgesReg = instructionMatches[badgeMoveMatchIndex].instruction.registersUsed[0]
+                    if (tweetReg >= 16 || badgesReg >= 16) {
+                        throw PatchException(
+                            "Expected 4-bit registers in ${method.definingClass}->${method.name}, got v$tweetReg, v$badgesReg",
+                        )
+                    }
+                    method.addInstructions(
+                        moveIndex + 1,
+                        """
+                        invoke-static {v$badgesReg, v$tweetReg}, $HELPER_CLASS->appendTweetBadgeIfMarked(Ljava/util/ArrayList;Ljava/lang/Object;)V
+                        """.trimIndent(),
+                    )
                 }
-                val quotedTweetReg = tweetInvoke.registersUsed[0]
-                method.addInstructions(
-                    moveUserIndex + 1,
-                    """
-                    invoke-static {v$userReg, v$quotedTweetReg}, $HELPER_CLASS->formatTweetUsername(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;
-                    move-result-object v$userReg
-                    """.trimIndent(),
-                )
             }
+
+            injectTweetBadgeHook(TweetHeaderBindFingerprint, 0, 1)
+            injectTweetBadgeHook(FocalTweetHeaderBindFingerprint, 0, 1)
+            injectTweetBadgeHook(QuoteViewBindFingerprint, 1, 2)
+
+            // 2. Native UsernameBadge factory: return golden star badge span for MarkerBadgeType sentinel
+            UsernameBadgeCreateFingerprint.method.addInstructionsWithLabels(
+                0,
+                """
+                move-object/from16 v0, p0
+                move-object/from16 v1, p1
+                invoke-static {v0, v1}, $HELPER_CLASS->createMarkerBadgeIfCustom(Landroid/view/View;Ljava/lang/Object;)Lcom/twitter/ui/user/j;
+                move-result-object v0
+                if-eqz v0, :cond_custom_badge_skip
+                return-object v0
+                :cond_custom_badge_skip
+                nop
+                """.trimIndent(),
+            )
 
             val twitterUserClassName = TwitterUserToStringFingerprint.classDef.type
 

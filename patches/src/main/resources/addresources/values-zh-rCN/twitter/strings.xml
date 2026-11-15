@@ -490,6 +490,7 @@ https://github.com/crimera/piko/blob/dev/docs/about_login_token_patch.md
     <string name="piko_author_marker_clear_all">全部清空</string>
     <string name="piko_author_marker_remove_item">移除</string>
     <string name="piko_author_marker_cleared">已清空全部手动标记</string>
+    <string name="piko_author_marker_badge_desc">已标记账号</string>
 
     <!-- Profile media frequency -->
     <string name="piko_pref_media_frequency_stat">个人主页显示日均媒体发布量</string>

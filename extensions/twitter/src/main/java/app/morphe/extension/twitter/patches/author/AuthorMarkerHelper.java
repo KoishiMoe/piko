@@ -64,6 +64,14 @@ public final class AuthorMarkerHelper {
 
     private static final String MARK_SUFFIX = " \u2605";
     private static final String MARK_SYMBOL = "\u2605";
+    private static final float BADGE_SCALE = 0.8f;
+
+    /**
+     * Sentinel badge type recognized by the UsernameBadge factory hook to emit StarBadgeDrawable.
+     */
+    private static final class MarkerBadgeType implements com.twitter.ui.user.k {
+        static final MarkerBadgeType INSTANCE = new MarkerBadgeType();
+    }
 
     private AuthorMarkerHelper() {
     }
@@ -234,28 +242,65 @@ public final class AuthorMarkerHelper {
         return firstLine + rest;
     }
 
-    public static String formatTweetUsername(String username, Object tweetObject) {
-        if (username == null || username.isEmpty() || tweetObject == null) {
-            return username;
+    /**
+     * Evaluates whether the tweet author should display a marker badge and keeps the handle cache in sync.
+     */
+    private static boolean shouldMarkTweet(Object tweetObject) throws Exception {
+        if (tweetObject == null || !Pref.enableAuthorMarker()) {
+            return false;
+        }
+        Tweet tweet = new Tweet(tweetObject);
+        long userId = extractAuthorId(tweet);
+        if (userId <= 0L) {
+            return false;
+        }
+        int friendship = tweet.getTweetAuthorFriendship();
+        syncHandleCacheIfMarked(userId, tweet.getTweetUsername());
+        return shouldMark(userId, friendship);
+    }
+
+    /**
+     * Appends the marker sentinel badge to TweetHeaderView's inline badge list so it renders
+     * alongside verified badges and is never hidden or ellipsized by long names/handles.
+     */
+    public static void appendTweetBadgeIfMarked(ArrayList<com.twitter.ui.user.k> badges, Object tweetObject) {
+        if (badges == null || tweetObject == null) {
+            return;
         }
         try {
-            if (!Pref.enableAuthorMarker()) {
-                return username;
-            }
-            Tweet tweet = new Tweet(tweetObject);
-            long userId = extractAuthorId(tweet);
-            if (userId <= 0L) {
-                return username;
-            }
-            int friendship = tweet.getTweetAuthorFriendship();
-            syncHandleCacheIfMarked(userId, tweet.getTweetUsername());
-            if (shouldMark(userId, friendship)) {
-                return appendMarkIdempotently(username);
+            if (shouldMarkTweet(tweetObject) && !badges.contains(MarkerBadgeType.INSTANCE)) {
+                badges.add(MarkerBadgeType.INSTANCE);
             }
         } catch (Throwable t) {
             PikoUtils.logger(t);
         }
-        return username;
+    }
+
+    /**
+     * Builds the native UsernameBadge wrapper when the factory receives our custom sentinel type;
+     * returns null for all native Twitter badge types so default rendering proceeds untouched.
+     */
+    public static com.twitter.ui.user.j createMarkerBadgeIfCustom(View view, Object badgeType) {
+        if (!(badgeType instanceof MarkerBadgeType)) {
+            return null;
+        }
+        try {
+            String desc = null;
+            try {
+                desc = StringRef.str("piko_author_marker_badge_desc");
+            } catch (Throwable ignored) {
+            }
+            if (desc == null || desc.isEmpty()) {
+                desc = "Marked account";
+            }
+            return new com.twitter.ui.user.j(
+                    new com.twitter.ui.widget.f(new StarBadgeDrawable(), BADGE_SCALE),
+                    desc
+            );
+        } catch (Throwable t) {
+            PikoUtils.logger(t);
+            return null;
+        }
     }
 
     public static String formatProfileUsername(String username, Object twitterUserObject) {

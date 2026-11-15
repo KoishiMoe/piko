@@ -303,6 +303,7 @@
         <item>@string/piko_title_native_downloader</item>
         <item>@string/piko_title_native_translator</item>
         <item>@string/piko_title_native_reader_mode</item>
+        <item>@string/piko_title_stitch_viewer</item>
         <item>@string/piko_share_image_title</item>
         <item>@string/piko_debug</item>
     </string-array>
@@ -316,8 +317,19 @@
         <item>piko_title_native_downloader</item>
         <item>piko_title_native_translator</item>
         <item>piko_title_native_reader_mode</item>
+        <item>piko_title_stitch_viewer</item>
         <item>piko_share_image_title</item>
         <item>piko_debug</item>
+    </string-array>
+
+    <string-array name="piko_array_stitch_direction">
+        <item>@string/piko_stitch_vertical</item>
+        <item>@string/piko_stitch_horizontal</item>
+    </string-array>
+
+    <string-array name="piko_array_stitch_direction_val">
+        <item>vertical</item>
+        <item>horizontal</item>
     </string-array>
 
 </resources>

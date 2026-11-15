@@ -500,5 +500,17 @@ public class Pref {
         return Utils.getBooleanPref(Settings.GALLERY_PAGE_COUNTER) && SettingsStatus.galleryPageCounter;
     }
 
+    public static boolean showMultiImageBadge() {
+        return Utils.getBooleanPref(Settings.TIMELINE_SHOW_MULTI_IMAGE_BADGE) && SettingsStatus.showMultiImageBadge;
+    }
+
+    public static boolean enableStitchViewer() {
+        return Utils.getBooleanPref(Settings.NATIVE_STITCH_VIEWER) && SettingsStatus.stitchViewer;
+    }
+
+    public static String stitchViewerDefaultDirection() {
+        return Utils.getStringPref(Settings.NATIVE_STITCH_DIRECTION);
+    }
+
     //end
 }

@@ -540,6 +540,26 @@ public class ScreenBuilder {
             );
         }
 
+        if (SettingsStatus.stitchViewer) {
+            category = preferenceCategory(str("piko_title_stitch_viewer"));
+
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_stitch_viewer_toggle"),
+                            str("piko_pref_stitch_viewer_toggle_desc"),
+                            Settings.NATIVE_STITCH_VIEWER
+                    )
+            );
+
+            addPreference(category,
+                    helper.listPreference(
+                            str("piko_pref_stitch_viewer_direction"),
+                            "",
+                            Settings.NATIVE_STITCH_DIRECTION
+                    )
+            );
+        }
+
         if (SettingsStatus.nativeTranslator) {
             category = preferenceCategory(str("piko_title_native_share_menu"));
 
@@ -1147,6 +1167,16 @@ public class ScreenBuilder {
                             str("piko_pref_gallery_page_counter"),
                             str("piko_pref_gallery_page_counter_desc"),
                             Settings.GALLERY_PAGE_COUNTER
+                    )
+            );
+        }
+
+        if (SettingsStatus.showMultiImageBadge) {
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_timeline_show_multi_image_badge"),
+                            str("piko_pref_timeline_show_multi_image_badge_desc"),
+                            Settings.TIMELINE_SHOW_MULTI_IMAGE_BADGE
                     )
             );
         }

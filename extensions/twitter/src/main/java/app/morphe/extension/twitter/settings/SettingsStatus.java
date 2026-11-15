@@ -418,9 +418,19 @@ public class SettingsStatus {
         galleryPageCounter = true;
     }
 
+    public static boolean showMultiImageBadge = false;
+    public static void showMultiImageBadge() {
+        showMultiImageBadge = true;
+    }
+
+    public static boolean stitchViewer = false;
+    public static void stitchViewer() {
+        stitchViewer = true;
+    }
+
 
     public static boolean enableTimelineSection() {
-        return ( fixGalleryBlackScreen || galleryPageCounter || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
+        return ( fixGalleryBlackScreen || galleryPageCounter || showMultiImageBadge || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
     }
 
     public static boolean enableMiscSection() {
@@ -432,7 +442,7 @@ public class SettingsStatus {
     }
 
     public static boolean enableNativeSection() {
-        return ( enableNativeShareMenu || nativeDownloader || nativeTranslator || nativeReaderMode || shareImage);
+        return ( enableNativeShareMenu || nativeDownloader || nativeTranslator || nativeReaderMode || shareImage || stitchViewer);
     }
 
     public static boolean enableDownloadSection() {

@@ -71,6 +71,8 @@ public class Settings {
     public static final StringSetting NATIVE_READER_MODE_THEME = new StringSetting("native_reader_mode_theme", "system");
     public static final BooleanSetting SHARE_IMAGE_ENABLED = new BooleanSetting("share_image_enabled", true);
     public static final BooleanSetting SHARE_IMAGE_AUTOCLEANUP = new BooleanSetting("share_image_autocleanup", true);
+    public static final BooleanSetting NATIVE_STITCH_VIEWER = new BooleanSetting("native_stitch_viewer", true);
+    public static final StringSetting NATIVE_STITCH_DIRECTION = new StringSetting("native_stitch_direction", "vertical");
     public static final BooleanSetting NATIVE_SHARE_MENU = new BooleanSetting("native_share_menu", true);
     public static final StringSetting NATIVE_SHARE_MENU_ITEMS_TO_HIDE = new StringSetting("native_share_menu_to_hide", "");
 
@@ -95,6 +97,7 @@ public class Settings {
     public static final BooleanSetting TIMELINE_HIDE_POST_DETAILED_METRICS = new BooleanSetting("timeline_hide_post_detailed_metrics", false);
     public static final BooleanSetting FIX_GALLERY_BLACK_SCREEN = new BooleanSetting("fix_gallery_black_screen", true);
     public static final BooleanSetting GALLERY_PAGE_COUNTER = new BooleanSetting("gallery_page_counter", true);
+    public static final BooleanSetting TIMELINE_SHOW_MULTI_IMAGE_BADGE = new BooleanSetting("timeline_show_multi_image_badge", true);
 
     public static final BooleanSetting PREMIUM_UNDO_POSTS = new BooleanSetting("premium_undo_posts", false);
     public static final BooleanSetting PREMIUM_NAVBAR = new BooleanSetting("premium_custom_navbar", true);
@@ -153,4 +156,5 @@ public class Settings {
     public static final String BACKUP_SECTION = "backup_section";
     public static final String NATIVE_SECTION = "native_section";
     public static final String READER_MODE_KEY = "readerMode";
+    public static final String STITCH_VIEWER_KEY = "stitchViewer";
 }

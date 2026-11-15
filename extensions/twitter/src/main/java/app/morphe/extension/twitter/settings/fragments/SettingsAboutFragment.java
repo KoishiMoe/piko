@@ -171,6 +171,8 @@ public class SettingsAboutFragment extends PreferenceFragment {
         flags.put(str("piko_pref_block_update_screen"),SettingsStatus.blockUpdateScreen);
         flags.put(str("piko_pref_fix_gallery_black_screen"),SettingsStatus.fixGalleryBlackScreen);
         flags.put(str("piko_pref_gallery_page_counter"),SettingsStatus.galleryPageCounter);
+        flags.put(str("piko_pref_timeline_show_multi_image_badge"),SettingsStatus.showMultiImageBadge);
+        flags.put(str("piko_title_stitch_viewer"),SettingsStatus.stitchViewer);
 
         LegacyTwitterPreferenceCategory patPref = preferenceCategory(str("piko_pref_patches"), screen);
 

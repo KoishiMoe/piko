@@ -454,4 +454,18 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_pref_fix_gallery_black_screen_desc">Prevents images from going black or losing tap/zoom controls from the 10th image onwards in multi-image galleries</string>
     <string name="piko_pref_gallery_page_counter">Show gallery page counter</string>
     <string name="piko_pref_gallery_page_counter_desc">Displays the current page indicator (e.g. 1 / 20) in the media gallery toolbar</string>
+    <string name="piko_pref_timeline_show_multi_image_badge">Show multi-image count badge</string>
+    <string name="piko_pref_timeline_show_multi_image_badge_desc">Displays a +N badge on the 4th grid image when a post contains more than 4 images</string>
+
+    <!-- Stitch image viewer -->
+    <string name="piko_title_stitch_viewer">Stitch images</string>
+    <string name="piko_pref_stitch_viewer_toggle">Enable stitch viewer</string>
+    <string name="piko_pref_stitch_viewer_toggle_desc">Adds a Stitch images viewer for seamlessly reading sliced multi-image posts horizontally or vertically</string>
+    <string name="piko_pref_stitch_viewer_direction">Default stitch direction</string>
+    <string name="piko_stitch_vertical">Vertical</string>
+    <string name="piko_stitch_horizontal">Horizontal</string>
+    <string name="piko_stitch_reverse">Reverse</string>
+    <string name="piko_stitch_orig">Original</string>
+    <string name="piko_stitch_large">Large</string>
+    <string name="piko_stitch_no_images">This post has fewer than 2 stitchable images</string>
 </resources>

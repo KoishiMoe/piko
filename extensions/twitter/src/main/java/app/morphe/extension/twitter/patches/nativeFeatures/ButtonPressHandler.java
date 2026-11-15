@@ -8,6 +8,7 @@ package app.morphe.extension.twitter.patches.nativeFeatures;
 
 import android.content.Context;
 
+import app.morphe.extension.twitter.patches.gallery.GalleryHelper;
 import app.morphe.extension.twitter.patches.nativeFeatures.downloader.NativeDownloader;
 import app.morphe.extension.twitter.patches.nativeFeatures.shareImage.ShareImageHandler;
 import app.morphe.extension.twitter.patches.nativeFeatures.translator.NativeTranslator;
@@ -29,6 +30,7 @@ public class ButtonPressHandler {
     public static boolean isButtonPressed(Object buttonPressed){
         return (
                 (buttonCheck(buttonPressed,"ShareImage")) || (buttonCheck(buttonPressed,"ReaderMode")) ||
+                (buttonCheck(buttonPressed,"StitchImages")) ||
                 (buttonCheck(buttonPressed,"Download")) || (buttonCheck(buttonPressed,"Translate")) ||
                 (buttonCheck(buttonPressed,"BrowseObject")) || (buttonCheck(buttonPressed,"ExternalDownload")) ||
                 (buttonCheck(buttonPressed,"TwitterShare") && Pref.enableNativeShareMenu())
@@ -42,6 +44,9 @@ public class ButtonPressHandler {
 
             } else if (buttonCheck(buttonPressed, "ReaderMode")) {
                 ReaderModeUtils.launchReaderMode(context, tweetObject);
+
+            } else if (buttonCheck(buttonPressed, "StitchImages")) {
+                GalleryHelper.openStitchViewerFromTweet(tweetObject);
 
             } else if (buttonCheck(buttonPressed, "Download")) {
                 NativeDownloader.downloader(context, tweetObject);

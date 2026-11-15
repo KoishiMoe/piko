@@ -27,8 +27,11 @@ import app.morphe.extension.shared.ResourceUtils;
 import app.morphe.extension.shared.Utils;
 import app.morphe.extension.twitter.settings.featureflags.FeatureFlagsFragment;
 import app.morphe.extension.twitter.settings.fragments.*;
+import app.morphe.extension.twitter.patches.gallery.StitchViewerFragment;
 import app.morphe.extension.twitter.patches.nativeFeatures.readerMode.ReaderModeFragment;
 import app.morphe.extension.twitter.patches.nativeFeatures.readerMode.ReaderModeUtils;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class ActivityHook {
@@ -88,6 +91,8 @@ public class ActivityHook {
             fragment = new SettingsAboutFragment();
         } else if (Settings.READER_MODE_KEY.equals(activity_name)) {
             fragment = new ReaderModeFragment();
+        } else if (Settings.STITCH_VIEWER_KEY.equals(activity_name)) {
+            fragment = new StitchViewerFragment();
         } else {
             fragment = new PageFragment();
         }
@@ -133,6 +138,7 @@ public class ActivityHook {
         }
         String toolbarText = switch (activity_name) {
             case Settings.READER_MODE_KEY -> "piko_title_native_reader_mode";
+            case Settings.STITCH_VIEWER_KEY -> "piko_title_stitch_viewer";
             case Settings.CHANGE_APP_ICON -> "piko_pref_customisation_change_app_icon";
             case Settings.EXPORT_LOGIN_TOKEN -> "piko_pref_export_login_token";
             default -> "piko_title_settings";
@@ -164,6 +170,12 @@ public class ActivityHook {
         Bundle bundle = new Bundle();
         bundle.putString(ReaderModeUtils.ARG_TWEET_ID, tweetId);
         startActivity(Settings.READER_MODE_KEY, bundle);
+    }
+
+    public static void startStitchViewer(ArrayList<String> imageUrls) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(StitchViewerFragment.ARG_IMAGE_URLS, imageUrls);
+        startActivity(Settings.STITCH_VIEWER_KEY, bundle);
     }
 
     public static void startSettingsActivity() {

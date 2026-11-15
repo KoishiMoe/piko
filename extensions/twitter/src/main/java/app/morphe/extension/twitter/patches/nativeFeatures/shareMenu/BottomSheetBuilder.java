@@ -18,6 +18,7 @@ import app.morphe.extension.shared.Utils;
 import app.morphe.extension.crimera.PikoUtils;
 import app.morphe.extension.crimera.ObjectBrowser;
 
+import app.morphe.extension.twitter.patches.gallery.GalleryHelper;
 import app.morphe.extension.twitter.patches.nativeFeatures.downloader.NativeDownloader;
 import app.morphe.extension.twitter.patches.nativeFeatures.shareImage.ShareImageHandler;
 import app.morphe.extension.twitter.patches.nativeFeatures.translator.NativeTranslator;
@@ -73,6 +74,11 @@ public class BottomSheetBuilder {
         itemKey = "piko_title_native_reader_mode";
         if(Pref.enableNativeReaderMode() && !itemsToHide.contains(itemKey)){
             actions.add(new BottomSheetAction<>("ic_vector_book_stroke_on",str(itemKey),t -> ReaderModeUtils.launchReaderMode(context, tweetObject)));
+        }
+
+        itemKey = "piko_title_stitch_viewer";
+        if(Pref.enableStitchViewer() && !itemsToHide.contains(itemKey) && GalleryHelper.hasStitchableImages(tweetObject)){
+            actions.add(new BottomSheetAction<>("ic_vector_image_collection",str(itemKey),t -> GalleryHelper.openStitchViewerFromTweet(tweetObject)));
         }
 
         itemKey = "piko_share_image_title";

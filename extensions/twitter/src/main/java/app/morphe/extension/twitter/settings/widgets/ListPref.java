@@ -85,6 +85,9 @@ public class ListPref extends ListPreference {
         }else if (key == Settings.NATIVE_READER_MODE_THEME.key) {
             entries = ResourceUtils.getStringArray("piko_array_readermode_themes");
             entriesValues = ResourceUtils.getStringArray("piko_array_readermode_themes_val");
+        }else if (key == Settings.NATIVE_STITCH_DIRECTION.key) {
+            entries = ResourceUtils.getStringArray("piko_array_stitch_direction");
+            entriesValues = ResourceUtils.getStringArray("piko_array_stitch_direction_val");
         }
 
         setEntries(entries);

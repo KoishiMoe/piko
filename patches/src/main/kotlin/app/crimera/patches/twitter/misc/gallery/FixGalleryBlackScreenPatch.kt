@@ -95,24 +95,9 @@ val fixGalleryBlackScreenPatch =
             }
 
             // Part B: Show centered "x / N" page counter in gallery toolbar on page selection.
+            val (holderToGalleryField, galleryClass, adapterField, adapterClass) = resolveGalleryHost()
+            val galleryClassType = galleryClass.type
             GalleryOnPageSelectedFingerprint.method.apply {
-                val holderToGalleryField =
-                    instructions
-                        .firstOrNull { it.opcode == Opcode.IGET_OBJECT }
-                        ?.let { (it as ReferenceInstruction).reference as? FieldReference }
-                        ?: throw PatchException("Failed to find gallery host field in onPageSelected")
-
-                val galleryClassType = holderToGalleryField.type
-                val galleryClass = mutableClassDefBy { it.type == galleryClassType }
-
-                val adapterField =
-                    instructions
-                        .filter { it.opcode == Opcode.IGET_OBJECT }
-                        .mapNotNull { (it as ReferenceInstruction).reference as? FieldReference }
-                        .firstOrNull { it.definingClass == galleryClassType }
-                        ?: throw PatchException("Failed to find gallery adapter field in onPageSelected")
-
-                val adapterClass = mutableClassDefBy { it.type == adapterField.type }
                 val getItemCountMethod =
                     adapterClass.methods.firstOrNull {
                         it.name == "getItemCount" && it.parameters.isEmpty() && it.returnType == "I"

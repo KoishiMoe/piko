@@ -1,3 +1,9 @@
+## [3.14.0](https://github.com/KoishiMoe/piko/compare/v3.13.0...v3.14.0) (2026-11-15)
+
+### ✨ New Features
+
+* **twitter:** quick search posts from user; known user marker; show media post frequency on profile page; lookup user on danbooru ([95633a6](https://github.com/KoishiMoe/piko/commit/95633a6b7784876c8f00a9eaed5e8310bf30a350))
+
 ## [3.13.0](https://github.com/KoishiMoe/piko/compare/v3.12.1...v3.13.0) (2026-11-15)
 
 ### 🐛 Bug Fixes

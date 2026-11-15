@@ -71,9 +71,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.13.0](https://github.com/KoishiMoe/piko/releases/tag/v3.13.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;149 patches total
+> **[v3.14.0](https://github.com/KoishiMoe/piko/releases/tag/v3.14.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;152 patches total
 <details>
-<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;78 patches</summary>
+<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;81 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -84,6 +84,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
 | [Add ability to copy media link](#add-ability-to-copy-media-link) |  |  |
+| [Author external lookup](#author-external-lookup) | Adds an external author lookup action to the native share sheet. |  |
+| [Author marker](#author-marker) | Marks followed and manually marked accounts across posts, quotes, and profiles. |  |
+| [Author quick search](#author-quick-search) | Adds an interactive quick search builder to the native share sheet. |  |
 | [Block redirecting to X Lite](#block-redirecting-to-x-lite) | Blocks redirecting to the new X Android UI on launch |  |
 | [Block update screen](#block-update-screen) | Blocks the 'This app is out of date' update screen from being shown on launch |  |
 | [Bring back twitter](#bring-back-twitter) | Bring back old twitter logo and name |  |

@@ -1,3 +1,9 @@
+## [3.14.1](https://github.com/KoishiMoe/piko/compare/v3.14.0...v3.14.1) (2026-11-15)
+
+### 🐛 Bug Fixes
+
+* **twitter:** move known user marker to the badge slot ([11b60c5](https://github.com/KoishiMoe/piko/commit/11b60c5f4ed834609ceb9540ed59b7ca7fc37f65))
+
 ## [3.14.0](https://github.com/KoishiMoe/piko/compare/v3.13.0...v3.14.0) (2026-11-15)
 
 ### ✨ New Features

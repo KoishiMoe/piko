@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-15T21:35:26",
-  "description": "## [3.14.0](https://github.com/KoishiMoe/piko/compare/v3.13.0...v3.14.0) (2026-11-15)\n\n### ✨ New Features\n\n* **twitter:** quick search posts from user; known user marker; show media post frequency on profile page; lookup user on danbooru ([95633a6](https://github.com/KoishiMoe/piko/commit/95633a6b7784876c8f00a9eaed5e8310bf30a350))",
-  "download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.14.0/patches-3.14.0.mpp",
-  "signature_download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.14.0/patches-3.14.0.mpp.asc",
-  "version": "3.14.0"
+  "created_at": "2026-11-15T22:17:32",
+  "description": "## [3.14.1](https://github.com/KoishiMoe/piko/compare/v3.14.0...v3.14.1) (2026-11-15)\n\n### 🐛 Bug Fixes\n\n* **twitter:** move known user marker to the badge slot ([11b60c5](https://github.com/KoishiMoe/piko/commit/11b60c5f4ed834609ceb9540ed59b7ca7fc37f65))",
+  "download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.14.1/patches-3.14.1.mpp",
+  "signature_download_url": "https://github.com/KoishiMoe/piko/releases/download/v3.14.1/patches-3.14.1.mpp.asc",
+  "version": "3.14.1"
 }

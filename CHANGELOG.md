@@ -1,3 +1,13 @@
+## [3.13.0](https://github.com/KoishiMoe/piko/compare/v3.12.1...v3.13.0) (2026-11-15)
+
+### 🐛 Bug Fixes
+
+* **twitter:** remove negative margin overlap in stitch viewer ([6c129e2](https://github.com/KoishiMoe/piko/commit/6c129e236b4146be3894d6578e932e055f9873f2))
+
+### ✨ New Features
+
+* **twitter:** add stitched original image saver ([9ed75aa](https://github.com/KoishiMoe/piko/commit/9ed75aaa67768940b52b248a89191ed1494d2b48))
+
 ## [3.12.1](https://github.com/KoishiMoe/piko/compare/v3.12.0...v3.12.1) (2026-11-15)
 
 ### 🐛 Bug Fixes

@@ -242,7 +242,7 @@ public class Utils {
         return publicFolder + "/" + subFolder + "/" + filename;
     }
 
-    private static String sanitizeFilename(String filename) {
+    public static String sanitizeFilename(String filename) {
         return TRAILING_DOT_OR_SPACE.matcher(
                 INVALID_FILENAME_CHARACTER.matcher(filename).replaceAll("_")
         ).replaceAll("");

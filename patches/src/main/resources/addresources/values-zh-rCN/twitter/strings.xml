@@ -436,4 +436,9 @@ https://github.com/crimera/piko/blob/dev/docs/about_login_token_patch.md
     <string name="piko_stitch_orig">原图</string>
     <string name="piko_stitch_large">大图</string>
     <string name="piko_stitch_no_images">当前贴文可拼接图片不足 2 张</string>
+    <string name="piko_stitch_save">保存</string>
+    <string name="piko_stitch_saving">保存中…</string>
+    <string name="piko_stitch_save_success">已保存到 Pictures/Twitter/%s</string>
+    <string name="piko_stitch_save_downscaled">图片尺寸超过内存上限，已自动缩放至 %d%% 保存</string>
+    <string name="piko_stitch_save_failed">保存拼接图片失败: %s</string>
 </resources>

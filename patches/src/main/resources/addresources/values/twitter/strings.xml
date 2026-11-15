@@ -468,4 +468,9 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_stitch_orig">Original</string>
     <string name="piko_stitch_large">Large</string>
     <string name="piko_stitch_no_images">This post has fewer than 2 stitchable images</string>
+    <string name="piko_stitch_save">Save</string>
+    <string name="piko_stitch_saving">Saving…</string>
+    <string name="piko_stitch_save_success">Saved to Pictures/Twitter/%s</string>
+    <string name="piko_stitch_save_downscaled">Image exceeded memory limit and was scaled to %d%%</string>
+    <string name="piko_stitch_save_failed">Failed to save stitched image: %s</string>
 </resources>

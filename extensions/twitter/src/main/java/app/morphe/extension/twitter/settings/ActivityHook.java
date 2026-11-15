@@ -173,8 +173,15 @@ public class ActivityHook {
     }
 
     public static void startStitchViewer(ArrayList<String> imageUrls) {
+        startStitchViewer(imageUrls, null);
+    }
+
+    public static void startStitchViewer(ArrayList<String> imageUrls, String baseFileName) {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(StitchViewerFragment.ARG_IMAGE_URLS, imageUrls);
+        if (baseFileName != null && !baseFileName.isEmpty()) {
+            bundle.putString(StitchViewerFragment.ARG_BASE_FILENAME, baseFileName);
+        }
         startActivity(Settings.STITCH_VIEWER_KEY, bundle);
     }
 

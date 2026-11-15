@@ -31,7 +31,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import app.morphe.extension.shared.ResourceUtils;
+import app.morphe.extension.shared.Utils;
 import app.morphe.extension.twitter.Pref;
 
 /**
@@ -43,16 +43,21 @@ import app.morphe.extension.twitter.Pref;
 @SuppressWarnings("deprecation")
 public class StitchViewerFragment extends Fragment {
     public static final String ARG_IMAGE_URLS = "stitch_image_urls";
+    public static final String ARG_BASE_FILENAME = "stitch_base_filename";
 
     private WebView webView;
     private ArrayList<String> imageUrls = new ArrayList<>();
+    @Nullable
+    private String baseFileName;
     private boolean isHorizontal;
     private boolean isReversed;
     private boolean useOriginalQuality = true;
+    private boolean isSaving;
 
     private TextView directionButton;
     private TextView reverseButton;
     private TextView qualityButton;
+    private TextView saveButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class StitchViewerFragment extends Fragment {
             if (passed != null) {
                 imageUrls = passed;
             }
+            baseFileName = args.getString(ARG_BASE_FILENAME);
         }
     }
 
@@ -99,7 +105,7 @@ public class StitchViewerFragment extends Fragment {
 
         if (imageUrls.isEmpty()) {
             TextView empty = new TextView(context);
-            empty.setText(str("piko_stitch_no_images", "No stitchable images"));
+            empty.setText(GalleryHelper.safeString("piko_stitch_no_images", "No stitchable images"));
             empty.setTextColor(Color.LTGRAY);
             empty.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f);
             empty.setGravity(Gravity.CENTER);
@@ -148,6 +154,7 @@ public class StitchViewerFragment extends Fragment {
         directionButton = createPillButton(context);
         reverseButton = createPillButton(context);
         qualityButton = createPillButton(context);
+        saveButton = createPillButton(context);
 
         directionButton.setOnClickListener(v -> {
             isHorizontal = !isHorizontal;
@@ -164,10 +171,12 @@ public class StitchViewerFragment extends Fragment {
             updateButtons();
             applyQualityInWebView();
         });
+        saveButton.setOnClickListener(v -> saveStitchedImage());
 
         bar.addView(directionButton);
         bar.addView(reverseButton);
         bar.addView(qualityButton);
+        bar.addView(saveButton);
         updateButtons();
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -182,16 +191,16 @@ public class StitchViewerFragment extends Fragment {
     private TextView createPillButton(Context context) {
         TextView btn = new TextView(context);
         btn.setTextColor(Color.WHITE);
-        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f);
+        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.5f);
         btn.setTypeface(Typeface.DEFAULT_BOLD);
-        int padH = dpToPx(context, 12f);
+        int padH = dpToPx(context, 10f);
         int padV = dpToPx(context, 6f);
         btn.setPadding(padH, padV, padH, padV);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        int marginH = dpToPx(context, 3f);
+        int marginH = dpToPx(context, 2.5f);
         lp.setMargins(marginH, 0, marginH, 0);
         btn.setLayoutParams(lp);
         return btn;
@@ -200,20 +209,54 @@ public class StitchViewerFragment extends Fragment {
     private void updateButtons() {
         if (directionButton != null) {
             directionButton.setText(isHorizontal
-                    ? str("piko_stitch_horizontal", "Horizontal")
-                    : str("piko_stitch_vertical", "Vertical"));
+                    ? GalleryHelper.safeString("piko_stitch_horizontal", "Horizontal")
+                    : GalleryHelper.safeString("piko_stitch_vertical", "Vertical"));
             applyActiveBg(directionButton, false);
         }
         if (reverseButton != null) {
-            reverseButton.setText(str("piko_stitch_reverse", "Reverse"));
+            reverseButton.setText(GalleryHelper.safeString("piko_stitch_reverse", "Reverse"));
             applyActiveBg(reverseButton, isReversed);
         }
         if (qualityButton != null) {
             qualityButton.setText(useOriginalQuality
-                    ? str("piko_stitch_orig", "Original")
-                    : str("piko_stitch_large", "Large"));
+                    ? GalleryHelper.safeString("piko_stitch_orig", "Original")
+                    : GalleryHelper.safeString("piko_stitch_large", "Large"));
             applyActiveBg(qualityButton, useOriginalQuality);
         }
+        if (saveButton != null) {
+            saveButton.setText(isSaving
+                    ? GalleryHelper.safeString("piko_stitch_saving", "Saving…")
+                    : GalleryHelper.safeString("piko_stitch_save", "Save"));
+            saveButton.setEnabled(!isSaving);
+            saveButton.setAlpha(isSaving ? 0.65f : 1.0f);
+            applyActiveBg(saveButton, false);
+        }
+    }
+
+    private void saveStitchedImage() {
+        if (isSaving || imageUrls.isEmpty()) {
+            return;
+        }
+        Context context = getActivity();
+        if (context == null) {
+            return;
+        }
+        isSaving = true;
+        updateButtons();
+        StitchImageSaver.saveAsync(
+                context,
+                imageUrls,
+                isHorizontal,
+                isReversed,
+                useOriginalQuality,
+                baseFileName,
+                (success, message) -> {
+                    isSaving = false;
+                    if (isAdded()) {
+                        updateButtons();
+                    }
+                    Utils.showToastLong(message);
+                });
     }
 
     private void applyActiveBg(TextView button, boolean active) {
@@ -311,15 +354,6 @@ public class StitchViewerFragment extends Fragment {
                 + "  for(var i=0;i<tiles.length;i++){tiles[i].src=formatUrl(tiles[i].dataset.raw,q);}"
                 + "};"
                 + "</script></body></html>";
-    }
-
-    private static String str(String name, String fallback) {
-        try {
-            String value = ResourceUtils.getString(name);
-            return (value != null && !value.isEmpty()) ? value : fallback;
-        } catch (Throwable ignored) {
-            return fallback;
-        }
     }
 
     private static int dpToPx(Context context, float dp) {

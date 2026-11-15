@@ -25,7 +25,7 @@ public class NativeDownloader {
         return str("piko_pref_native_downloader_alert_title");
     }
 
-    private static String generateFileName(Tweet tweet) throws Exception {
+    public static String generateFileName(Tweet tweet) throws Exception {
         String tweetId = String.valueOf(tweet.getTweetId());
         int fileNameType = Pref.nativeDownloaderFileNameType();
         switch (fileNameType) {
@@ -36,10 +36,27 @@ public class NativeDownloader {
             case 3:
                 return tweet.getTweetUserId() + "_" + tweetId;
             case 5:
-                return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS"));
+                return generateTimestampName();
             default:
                 return tweetId;
         }
+    }
+
+    public static String generateFileName(Object tweetObj) {
+        if (tweetObj != null) {
+            try {
+                String name = generateFileName(new Tweet(tweetObj));
+                if (name != null && !name.isEmpty()) {
+                    return name;
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+        return generateTimestampName();
+    }
+
+    public static String generateTimestampName() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS"));
     }
 
     public static ArrayList<DownloadItem> buildDownloadItems(

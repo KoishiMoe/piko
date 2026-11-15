@@ -37,6 +37,7 @@ import app.morphe.extension.twitter.Pref;
 import app.morphe.extension.twitter.entity.ExtMediaEntities;
 import app.morphe.extension.twitter.entity.Media;
 import app.morphe.extension.twitter.entity.Tweet;
+import app.morphe.extension.twitter.patches.nativeFeatures.downloader.NativeDownloader;
 import app.morphe.extension.twitter.settings.ActivityHook;
 
 /**
@@ -209,7 +210,8 @@ public final class GalleryHelper {
         try {
             ArrayList<String> urls = extractPhotoUrls(tweetObj, galleryItems);
             if (urls.size() >= 2) {
-                ActivityHook.startStitchViewer(urls);
+                String baseFileName = tweetObj != null ? NativeDownloader.generateFileName(tweetObj) : null;
+                ActivityHook.startStitchViewer(urls, baseFileName);
             } else {
                 Utils.showToastShort(safeString("piko_stitch_no_images", "Fewer than 2 stitchable images"));
             }
@@ -233,7 +235,8 @@ public final class GalleryHelper {
         try {
             ArrayList<String> urls = extractPhotoUrlsFromTweet(tweetObj);
             if (urls.size() >= 2) {
-                ActivityHook.startStitchViewer(urls);
+                String baseFileName = tweetObj != null ? NativeDownloader.generateFileName(tweetObj) : null;
+                ActivityHook.startStitchViewer(urls, baseFileName);
             } else {
                 Utils.showToastShort(safeString("piko_stitch_no_images", "Fewer than 2 stitchable images"));
             }
@@ -381,7 +384,7 @@ public final class GalleryHelper {
         return badge;
     }
 
-    private static String safeString(String name, String fallback) {
+    static String safeString(String name, String fallback) {
         try {
             String value = ResourceUtils.getString(name);
             return (value != null && !value.isEmpty()) ? value : fallback;

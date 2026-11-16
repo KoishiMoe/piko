@@ -71,9 +71,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.14.2](https://github.com/KoishiMoe/piko/releases/tag/v3.14.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;152 patches total
+> **[v3.15.0](https://github.com/KoishiMoe/piko/releases/tag/v3.15.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;153 patches total
 <details>
-<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;81 patches</summary>
+<summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;82 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -164,6 +164,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Show sensitive media](#show-sensitive-media) |  |  |
 | [Stitch images](#stitch-images) | Adds a seamless horizontal/vertical stitched viewer for multi-image posts in the gallery and share menu |  |
 | [Support external downloader](#support-external-downloader) |  |  |
+| [Timeline history](#timeline-history) | Records seen posts in the view layer with a local storage limit so you can recover posts lost to refreshes, crashes, or app pauses. |  |
 
 </details>
 

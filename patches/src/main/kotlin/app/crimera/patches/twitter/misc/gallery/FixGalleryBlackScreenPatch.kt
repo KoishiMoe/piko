@@ -19,9 +19,6 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.AccessFlags
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val GALLERY_HELPER_DESCRIPTOR = "${PATCHES_DESCRIPTOR}/gallery/GalleryHelper;"
@@ -96,19 +93,11 @@ val fixGalleryBlackScreenPatch =
 
             // Part B: Show centered "x / N" page counter in gallery toolbar on page selection.
             val (holderToGalleryField, galleryClass, adapterField, adapterClass) = resolveGalleryHost()
-            val galleryClassType = galleryClass.type
             GalleryOnPageSelectedFingerprint.method.apply {
                 val getItemCountMethod =
                     adapterClass.methods.firstOrNull {
                         it.name == "getItemCount" && it.parameters.isEmpty() && it.returnType == "I"
                     } ?: throw PatchException("Failed to find getItemCount() on gallery adapter")
-
-                val currentIndexField =
-                    instructions
-                        .firstOrNull { it.opcode == Opcode.IPUT }
-                        ?.let { (it as ReferenceInstruction).reference as? FieldReference }
-                        ?.takeIf { it.definingClass == galleryClassType && it.type == "I" }
-                        ?: throw PatchException("Failed to find currentIndex field on gallery host")
 
                 val (chromeField, toolbarField) =
                     galleryClass.fields
@@ -123,22 +112,31 @@ val fixGalleryBlackScreenPatch =
                             if (toolbar != null) field to toolbar else null
                         } ?: throw PatchException("Failed to find gallery chrome Toolbar field")
 
-                val returnIndex = instructions.indexOfLast { it.opcode == Opcode.RETURN_VOID }
-                if (returnIndex < 0) {
-                    throw PatchException("Failed to find return-void in gallery onPageSelected")
+                val methodImpl =
+                    implementation
+                        ?: throw PatchException("Gallery onPageSelected method has no implementation")
+                val parameterRegisterCount =
+                    (if (AccessFlags.STATIC.isSet(accessFlags)) 0 else 1) +
+                        parameters.sumOf { if (it.type == "J" || it.type == "D") 2 else 1 }
+                if (methodImpl.registerCount - parameterRegisterCount < 3) {
+                    throw PatchException("Not enough local registers in gallery onPageSelected")
                 }
 
+                // Inject at entry before early returns (e.g. empty adapter or unbound ViewHolder on initial open/restore).
+                // Read $adapterField before $chromeField so resolveGalleryHost() keeps matching $adapterField
+                // as the first IGET_OBJECT on galleryClass even if another patch runs after this one.
+                val originalStart = getInstruction(0)
                 addInstructionsWithLabels(
-                    returnIndex,
+                    0,
                     """
-                        move-object/from16 v3, p0
-                        iget-object v3, v3, $holderToGalleryField
-                        if-eqz v3, :done_counter
-                        iget-object v0, v3, $chromeField
-                        if-eqz v0, :done_counter
+                        move-object/from16 v0, p0
+                        iget-object v1, v0, $holderToGalleryField
+                        if-eqz v1, :original
+                        iget-object v2, v1, $adapterField
+                        iget-object v0, v1, $chromeField
+                        if-eqz v0, :original
                         iget-object v0, v0, $toolbarField
-                        iget v1, v3, $currentIndexField
-                        iget-object v2, v3, $adapterField
+                        if-eqz v0, :original
                         if-eqz v2, :skip_count
                         invoke-virtual {v2}, $getItemCountMethod
                         move-result v2
@@ -146,9 +144,10 @@ val fixGalleryBlackScreenPatch =
                         :skip_count
                         const/4 v2, 0x0
                         :call_counter
+                        move/from16 v1, p1
                         invoke-static {v0, v1, v2}, $GALLERY_HELPER_DESCRIPTOR->updatePageCounter(${TOOLBAR_TYPE}II)V
                     """.trimIndent(),
-                    ExternalLabel("done_counter", getInstruction(returnIndex)),
+                    ExternalLabel("original", originalStart),
                 )
             }
 

@@ -25,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -48,6 +49,7 @@ public final class GalleryHelper {
     private static final String COUNTER_TAG = "piko_gallery_counter";
     private static final String MULTI_IMAGE_BADGE_TAG = "piko_multi_image_badge";
     private static final int STITCH_MENU_ITEM_ID = 0x7f0b7001;
+    private static volatile Field cachedGravityField;
 
     private GalleryHelper() {
     }
@@ -76,12 +78,12 @@ public final class GalleryHelper {
 
             if (badge == null) {
                 badge = createPillBadge(toolbar.getContext(), COUNTER_TAG, 13f, 10f, 4f, 0x99000000, 14f, 0);
-                Toolbar.LayoutParams params = new Toolbar.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        Gravity.CENTER
-                );
-                toolbar.addView(badge, params);
+                badge.setSingleLine(true);
+                badge.setGravity(Gravity.CENTER);
+                // Let Toolbar.generateDefaultLayoutParams() allocate its obfuscated LayoutParams subclass
+                // instead of instantiating androidx.appcompat.widget.Toolbar$LayoutParams directly.
+                toolbar.addView(badge);
+                centerInToolbar(badge);
             }
 
             badge.setText((position + 1) + " / " + totalCount);
@@ -89,6 +91,102 @@ public final class GalleryHelper {
         } catch (Throwable t) {
             PikoUtils.logger(t);
         }
+    }
+
+    private static void centerInToolbar(View badge) throws IllegalAccessException {
+        ViewGroup.LayoutParams lp = badge.getLayoutParams();
+        if (lp == null) {
+            return;
+        }
+        Field gravityField = resolveGravityField(lp);
+        if (gravityField != null) {
+            gravityField.setInt(lp, Gravity.CENTER);
+            badge.setLayoutParams(lp);
+        }
+    }
+
+    @Nullable
+    private static Field resolveGravityField(ViewGroup.LayoutParams lp) throws IllegalAccessException {
+        Field cached = cachedGravityField;
+        if (cached != null && cached.getDeclaringClass().isInstance(lp)) {
+            return cached;
+        }
+        Class<?> lpClass = lp.getClass();
+        Field named = findGravityFieldByName(lpClass);
+        if (named != null) {
+            return cacheGravityField(named);
+        }
+        Field byDefaultValue = findGravityFieldByDefaultValue(lp, lpClass);
+        if (byDefaultValue != null) {
+            return cacheGravityField(byDefaultValue);
+        }
+        for (Class<?> cls = lpClass.getSuperclass(); isLayoutParamsSubclass(cls); cls = cls.getSuperclass()) {
+            Field soleInt = findSoleInstanceIntField(cls);
+            if (soleInt != null) {
+                return cacheGravityField(soleInt);
+            }
+        }
+        return null;
+    }
+
+    private static boolean isLayoutParamsSubclass(@Nullable Class<?> cls) {
+        return cls != null
+                && cls != ViewGroup.MarginLayoutParams.class
+                && cls != ViewGroup.LayoutParams.class
+                && cls != Object.class;
+    }
+
+    @Nullable
+    private static Field findGravityFieldByName(Class<?> lpClass) {
+        for (Class<?> cls = lpClass; isLayoutParamsSubclass(cls); cls = cls.getSuperclass()) {
+            try {
+                Field field = cls.getDeclaredField("gravity");
+                if (!Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                    return field;
+                }
+            } catch (NoSuchFieldException ignored) {
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private static Field findGravityFieldByDefaultValue(ViewGroup.LayoutParams lp, Class<?> lpClass)
+            throws IllegalAccessException {
+        int startCenter = Gravity.START | Gravity.CENTER_VERTICAL;
+        int leftCenter = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+        for (Class<?> cls = lpClass; isLayoutParamsSubclass(cls); cls = cls.getSuperclass()) {
+            for (Field field : cls.getDeclaredFields()) {
+                if (!Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                    field.setAccessible(true);
+                    int value = field.getInt(lp);
+                    if (value == startCenter || value == leftCenter) {
+                        return field;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private static Field findSoleInstanceIntField(Class<?> cls) {
+        Field match = null;
+        for (Field field : cls.getDeclaredFields()) {
+            if (!Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                if (match != null) {
+                    return null;
+                }
+                match = field;
+            }
+        }
+        return match;
+    }
+
+    private static Field cacheGravityField(Field field) {
+        field.setAccessible(true);
+        cachedGravityField = field;
+        return field;
     }
 
     /**

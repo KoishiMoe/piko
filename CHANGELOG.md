@@ -1,3 +1,9 @@
+## [3.14.2](https://github.com/KoishiMoe/piko/compare/v3.14.1...v3.14.2) (2026-11-16)
+
+### 🐛 Bug Fixes
+
+* **twitter:** fix gallery page counter hook placement and toolbar layout params ([a4ab4ea](https://github.com/KoishiMoe/piko/commit/a4ab4eab7004863d5fb2015ae0c57d1789f9783f))
+
 ## [3.14.1](https://github.com/KoishiMoe/piko/compare/v3.14.0...v3.14.1) (2026-11-15)
 
 ### 🐛 Bug Fixes

@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.ListView;
 import androidx.annotation.Nullable;
 
+import app.morphe.extension.shared.ResourceUtils;
+import app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager;
 import app.morphe.extension.twitter.settings.ActivityHook;
 import app.morphe.extension.twitter.settings.SettingsSearchNavigator;
 import app.morphe.extension.twitter.settings.widgets.Helper;
@@ -24,11 +26,20 @@ public class PageFragment extends PreferenceFragment {
     private Context context;
     private Preference searchTargetPreference;
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        ActivityHook.toolbar.setTitle(StringRef.str("piko_title_settings"));
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bundle = getArguments();
+        String actName = bundle != null ? bundle.getString(Settings.ACT_NAME) : null;
+        String titleRes = ScreenBuilder.getSectionTitleResourceName(actName);
+        if (ActivityHook.toolbar != null && titleRes != null) {
+            ActivityHook.toolbar.setTitle(ResourceUtils.getString(titleRes));
+        }
+        Preference histPref = findPreference(Settings.TIMELINE_HISTORY_VIEW);
+        if (histPref != null) {
+            histPref.setSummary(TimelineHistoryManager.getHistorySummary());
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

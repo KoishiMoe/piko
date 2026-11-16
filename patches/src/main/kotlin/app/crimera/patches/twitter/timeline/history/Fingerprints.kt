@@ -41,6 +41,15 @@ internal object QuoteTweetViewBindFingerprint : Fingerprint(
     returnType = "V",
 )
 
+internal object InlineActionBarSetTweetFingerprint : Fingerprint(
+    definingClass = "Lcom/twitter/ui/tweet/inlineactions/InlineActionBar;",
+    parameters = listOf(
+        "Lcom/twitter/model/core/e;",
+        "Z",
+    ),
+    returnType = "V",
+)
+
 internal object TimelineFetchTriggerFingerprint : Fingerprint(
     definingClass = "Lcom/twitter/app/common/timeline/c0;",
     parameters = listOf("I"),

@@ -71,6 +71,12 @@ val timelineHistoryPatch =
                 "invoke-static/range {p0 .. p1}, $TIMELINE_HISTORY_MANAGER->onQuoteBound(Landroid/view/View;Ljava/lang/Object;)V",
             )
 
+            // Secondary view-layer anchor on InlineActionBar to catch timeline/reply rows without full header rebinds.
+            InlineActionBarSetTweetFingerprint.matchOrNull()?.method?.addInstruction(
+                0,
+                "invoke-static/range {p0 .. p1}, $TIMELINE_HISTORY_MANAGER->onInlineActionBarBound(Landroid/view/View;Ljava/lang/Object;)V",
+            )
+
             // Synchronously capture currently visible posts right before pull-to-refresh or auto-refresh runs.
             TimelineFetchTriggerFingerprint.matchOrNull()?.method?.addInstruction(
                 0,

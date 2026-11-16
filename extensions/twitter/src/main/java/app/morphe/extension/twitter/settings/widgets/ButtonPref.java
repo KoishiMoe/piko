@@ -34,6 +34,7 @@ import app.morphe.extension.twitter.patches.customise.font.UpdateFont;
 import app.morphe.extension.twitter.patches.logintoken.ExportLoginTokenFragment;
 import app.morphe.extension.twitter.patches.logintoken.ImportLoginTokenDialogFragment;
 import app.morphe.extension.twitter.patches.nativeFeatures.readerMode.ReaderModeUtils;
+import app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager;
 import app.morphe.extension.twitter.settings.ActivityHook;
 import app.morphe.extension.twitter.settings.Settings;
 import app.morphe.extension.twitter.settings.fragments.BackupPrefFragment;
@@ -149,10 +150,15 @@ public class ButtonPref extends Preference {
                         PikoUtils.openDefaultLinks();
                     } else if (key.equals(Settings.CHANGELOGS_TITLE)){
                         Changelogs.showChangelogDialog(context);
-                    } else if (key.equals(Settings.TIMELINE_HISTORY_VIEW)) {
-                        fragment = new app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryFragment();
                     } else if (key.equals(Settings.TIMELINE_HISTORY_CLEAR)) {
-                        app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager.showClearConfirmDialog(context, null);
+                        TimelineHistoryManager.showClearConfirmDialog(context, () -> {
+                            Preference viewPref = getPreferenceManager() != null
+                                    ? getPreferenceManager().findPreference(Settings.TIMELINE_HISTORY_VIEW)
+                                    : null;
+                            if (viewPref != null) {
+                                viewPref.setSummary(TimelineHistoryManager.getHistorySummary());
+                            }
+                        });
                     } else if (key.equals(Settings.AUTHOR_MARKER_MANAGE)) {
                         AuthorMarkerHelper.showManageMarkedAccountsDialog(
                                 context,

@@ -7,14 +7,14 @@
 package app.morphe.extension.twitter.settings.widgets;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
-import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatButton;
 
+import app.morphe.extension.crimera.PikoUtils;
 import app.morphe.extension.twitter.Pref;
-import app.morphe.extension.twitter.Utils;
 import app.morphe.extension.twitter.settings.ActivityHook;
 import app.morphe.extension.twitter.settings.Settings;
 import app.morphe.extension.twitter.settings.SettingsStatus;
@@ -22,7 +22,7 @@ import app.morphe.extension.twitter.settings.SettingsStatus;
 /**
  * Quick-access button inside the navigation drawer footer to open Timeline History.
  */
-public class PikoHistoryButton extends AppCompatImageButton implements View.OnClickListener {
+public class PikoHistoryButton extends AppCompatButton implements View.OnClickListener {
 
     public PikoHistoryButton(Context context) {
         super(context);
@@ -40,18 +40,21 @@ public class PikoHistoryButton extends AppCompatImageButton implements View.OnCl
     }
 
     private void init() {
-        applyThemeTint();
-        updateVisibility();
         setOnClickListener(this);
+        float elev = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 6f, getResources().getDisplayMetrics());
+        setElevation(elev);
+        setTranslationZ(elev);
+        updateVisibility();
     }
 
-    private void applyThemeTint() {
-        try {
-            int clr = Utils.resolveColor(getContext(), "coreColorPrimaryText");
-            if (clr != 0) {
-                setColorFilter(clr, PorterDuff.Mode.SRC_IN);
-            }
-        } catch (Throwable ignored) {
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        updateVisibility();
+        if (getVisibility() == View.VISIBLE) {
+            bringToFront();
+            post(this::bringToFront);
         }
     }
 
@@ -59,6 +62,10 @@ public class PikoHistoryButton extends AppCompatImageButton implements View.OnCl
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
         updateVisibility();
+        if (visibility == View.VISIBLE && getVisibility() == View.VISIBLE) {
+            bringToFront();
+            post(this::bringToFront);
+        }
     }
 
     private void updateVisibility() {
@@ -68,6 +75,10 @@ public class PikoHistoryButton extends AppCompatImageButton implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        ActivityHook.startActivity(Settings.TIMELINE_HISTORY_VIEW);
+        try {
+            ActivityHook.startActivity(Settings.TIMELINE_HISTORY_VIEW);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+        }
     }
 }

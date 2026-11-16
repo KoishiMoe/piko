@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import app.morphe.extension.crimera.CustomCrashHandler;
 import app.morphe.extension.crimera.PikoUtils;
+import app.morphe.extension.shared.StringRef;
 import app.morphe.extension.shared.Utils;
 import app.morphe.extension.twitter.Pref;
 import app.morphe.extension.twitter.entity.Media;
@@ -79,8 +83,10 @@ public final class TimelineHistoryManager {
     private static final AtomicBoolean INITIALIZED = new AtomicBoolean(false);
     private static final AtomicBoolean WRITE_SCHEDULED = new AtomicBoolean(false);
 
-    // Main-thread only: tracks currently bound TweetHeaderView / QuoteView instances.
+    // Main-thread only: tracks currently bound TweetHeaderView / InlineActionBar / QuoteView instances.
     private static final WeakHashMap<View, TrackedBinding> TRACKED_VIEWS = new WeakHashMap<>();
+    private static final WeakHashMap<View, Boolean> OBSERVED_ROOTS = new WeakHashMap<>();
+    private static boolean scanScheduled = false;
 
     // Thread-safe staged onscreen snapshots (safe to flush from any crashing thread).
     private static final ConcurrentHashMap<String, TimelineHistoryEntry> STAGED_ENTRIES = new ConcurrentHashMap<>();
@@ -96,6 +102,13 @@ public final class TimelineHistoryManager {
         WRITE_SCHEDULED.set(false);
         submitAsyncWrite();
     };
+    private static final Runnable SCAN_RUNNABLE = () -> {
+        scanScheduled = false;
+        scanTrackedViewsOnUiThread();
+    };
+    private static final Runnable FOLLOWUP_SCAN_150 = TimelineHistoryManager::scanTrackedViewsOnUiThread;
+    private static final Runnable FOLLOWUP_SCAN_450 = TimelineHistoryManager::scanTrackedViewsOnUiThread;
+    private static final Runnable FOLLOWUP_SCAN_1000 = TimelineHistoryManager::scanTrackedViewsOnUiThread;
 
     private TimelineHistoryManager() {
     }
@@ -177,6 +190,14 @@ public final class TimelineHistoryManager {
         trackViewBound(quoteView, quoteView, tweetObj, TimelineHistoryEntry.SOURCE_QUOTE);
     }
 
+    /** Hooked at InlineActionBar.f(tweet, ...) as a secondary row-level anchor. */
+    public static void onInlineActionBarBound(@Nullable View actionBarView, @Nullable Object tweetObj) {
+        if (actionBarView == null || tweetObj == null || !isEnabled()) {
+            return;
+        }
+        trackViewBound(actionBarView, findEnclosingTweetView(actionBarView), tweetObj, TimelineHistoryEntry.SOURCE_TIMELINE);
+    }
+
     /** Hooked at c0.l0(int fetchType) right before timeline fetches replace or prepend items. */
     public static void onTimelineFetch(int fetchType) {
         if (!isEnabled()) {
@@ -231,18 +252,24 @@ public final class TimelineHistoryManager {
             installAttachListener(anchorView, binding);
         } else {
             cancelTimers(binding);
-            removeStagedKey(binding.stagedKey);
-            binding.stagedKey = null;
+            if (binding.tweetObj != tweetObj) {
+                removeStagedKey(binding.stagedKey);
+                binding.stagedKey = null;
+                binding.committed = false;
+            }
         }
 
         binding.anchorView = anchorView;
         binding.measureTarget = measureTarget;
         binding.tweetObj = tweetObj;
         binding.sourceType = sourceType;
-        binding.committed = false;
 
         if (anchorView.isAttachedToWindow()) {
-            scheduleExposureChecks(binding);
+            ensureTreeObserversInstalled(anchorView);
+            if (!binding.committed) {
+                scheduleExposureChecks(binding);
+                scheduleFollowUpScans();
+            }
         }
     }
 
@@ -250,8 +277,10 @@ public final class TimelineHistoryManager {
         anchorView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {
+                ensureTreeObserversInstalled(v);
                 if (binding.tweetObj != null && !binding.committed) {
                     scheduleExposureChecks(binding);
+                    scheduleFollowUpScans();
                 }
             }
 
@@ -260,10 +289,65 @@ public final class TimelineHistoryManager {
                 cancelTimers(binding);
                 removeStagedKey(binding.stagedKey);
                 binding.stagedKey = null;
-                binding.tweetObj = null;
-                binding.measureTarget = null;
             }
         });
+    }
+
+    private static void ensureTreeObserversInstalled(@NonNull View anchorView) {
+        View root = anchorView.getRootView();
+        if (root == null) {
+            root = anchorView;
+        }
+        if (OBSERVED_ROOTS.containsKey(root)) {
+            return;
+        }
+        ViewTreeObserver observer = root.getViewTreeObserver();
+        if (observer == null || !observer.isAlive()) {
+            return;
+        }
+        OBSERVED_ROOTS.put(root, Boolean.TRUE);
+        observer.addOnScrollChangedListener(() -> scheduleThrottledScan(80L));
+        observer.addOnGlobalLayoutListener(() -> scheduleThrottledScan(100L));
+    }
+
+    private static void scheduleThrottledScan(long delayMs) {
+        if (!scanScheduled) {
+            scanScheduled = true;
+            MAIN_HANDLER.postDelayed(SCAN_RUNNABLE, delayMs);
+        }
+    }
+
+    private static void scheduleFollowUpScans() {
+        MAIN_HANDLER.removeCallbacks(FOLLOWUP_SCAN_150);
+        MAIN_HANDLER.removeCallbacks(FOLLOWUP_SCAN_450);
+        MAIN_HANDLER.removeCallbacks(FOLLOWUP_SCAN_1000);
+        MAIN_HANDLER.postDelayed(FOLLOWUP_SCAN_150, 150L);
+        MAIN_HANDLER.postDelayed(FOLLOWUP_SCAN_450, 450L);
+        MAIN_HANDLER.postDelayed(FOLLOWUP_SCAN_1000, 1000L);
+    }
+
+    private static void scanTrackedViewsOnUiThread() {
+        if (!isEnabled()) {
+            return;
+        }
+        for (TrackedBinding binding : TRACKED_VIEWS.values()) {
+            if (binding == null
+                    || binding.committed
+                    || binding.tweetObj == null
+                    || binding.anchorView == null
+                    || !binding.anchorView.isAttachedToWindow()) {
+                continue;
+            }
+            if (isBindingVisibleOnScreen(binding)) {
+                if (binding.stageRunnable == null && binding.dwellRunnable == null) {
+                    scheduleExposureChecks(binding);
+                }
+            } else {
+                cancelTimers(binding);
+                removeStagedKey(binding.stagedKey);
+                binding.stagedKey = null;
+            }
+        }
     }
 
     private static void scheduleExposureChecks(@NonNull TrackedBinding binding) {
@@ -274,7 +358,7 @@ public final class TimelineHistoryManager {
             if (!isEnabled() || binding.committed || binding.tweetObj == null) {
                 return;
             }
-            if (!isActuallyVisibleOnScreen(binding.measureTarget)) {
+            if (!isBindingVisibleOnScreen(binding)) {
                 return;
             }
             TimelineHistoryEntry entry = extractEntry(binding.tweetObj, binding.sourceType);
@@ -288,7 +372,7 @@ public final class TimelineHistoryManager {
             if (!isEnabled() || binding.committed || binding.tweetObj == null) {
                 return;
             }
-            if (!isActuallyVisibleOnScreen(binding.measureTarget)) {
+            if (!isBindingVisibleOnScreen(binding)) {
                 removeStagedKey(binding.stagedKey);
                 binding.stagedKey = null;
                 return;
@@ -388,7 +472,7 @@ public final class TimelineHistoryManager {
             if (binding == null || binding.committed || binding.tweetObj == null) {
                 continue;
             }
-            if (!isActuallyVisibleOnScreen(binding.measureTarget)) {
+            if (!isBindingVisibleOnScreen(binding)) {
                 continue;
             }
             TimelineHistoryEntry entry = removeStagedKey(binding.stagedKey);
@@ -542,6 +626,16 @@ public final class TimelineHistoryManager {
         return TimelineHistoryDatabase.getInstance(context).getCount(getCurrentAccountId());
     }
 
+    @NonNull
+    public static String getHistorySummary() {
+        return String.format(
+                Locale.getDefault(),
+                StringRef.str("piko_pref_timeline_history_view_desc"),
+                getHistoryCount(),
+                getHistoryLimit()
+        );
+    }
+
     public static void pruneCurrentAccount() {
         Context context = Utils.getContext();
         if (context == null) {
@@ -575,6 +669,13 @@ public final class TimelineHistoryManager {
         RECENT_WRITTEN.entrySet().removeIf(e -> e.getKey().startsWith(prefix));
         PENDING_QUEUE.removeIf(e -> accountId.equals(e.accountId));
         TimelineHistoryDatabase.getInstance(context).clearAccount(accountId);
+        MAIN_HANDLER.post(() -> {
+            for (TrackedBinding binding : TRACKED_VIEWS.values()) {
+                if (binding != null) {
+                    binding.committed = false;
+                }
+            }
+        });
     }
 
     /** Shows confirmation dialog, clears current account history on background thread, then runs callback. */
@@ -705,19 +806,52 @@ public final class TimelineHistoryManager {
 
     @NonNull
     private static View findEnclosingTweetView(@NonNull View childView) {
+        View fallbackCandidate = null;
+        boolean stopFallback = false;
         ViewParent parent = childView.getParent();
-        for (int i = 0; i < 6 && parent != null; i++) {
-            if (parent instanceof View) {
-                View view = (View) parent;
-                if ("TweetView".equals(view.getClass().getSimpleName())) {
-                    return view;
-                }
-                parent = view.getParent();
-            } else {
+        for (int i = 0; i < 8 && parent != null; i++) {
+            if (!(parent instanceof View)) {
                 break;
             }
+            View view = (View) parent;
+            Class<?> cls = view.getClass();
+            String simpleName = cls.getSimpleName();
+            String fullName = cls.getName();
+
+            if (!"QuoteView".equals(simpleName) && !simpleName.contains("ContentHostContainer")) {
+                if (simpleName.contains("TweetView")
+                        || simpleName.contains("RowView")
+                        || fullName.startsWith("com.twitter.tweetview.")) {
+                    return view;
+                }
+            }
+
+            if (isListOrRootContainer(simpleName)) {
+                stopFallback = true;
+            } else if (!stopFallback && i < 4 && view instanceof ViewGroup && !"FrameLayout".equals(simpleName)) {
+                fallbackCandidate = view;
+            }
+
+            parent = view.getParent();
         }
-        return childView;
+        return fallbackCandidate != null ? fallbackCandidate : childView;
+    }
+
+    private static boolean isListOrRootContainer(@NonNull String simpleName) {
+        return simpleName.contains("RecyclerView")
+                || simpleName.contains("ListView")
+                || simpleName.contains("Pager")
+                || simpleName.contains("CoordinatorLayout");
+    }
+
+    private static boolean isBindingVisibleOnScreen(@NonNull TrackedBinding binding) {
+        if (binding.sourceType != TimelineHistoryEntry.SOURCE_QUOTE
+                && binding.anchorView != null
+                && (binding.measureTarget == null || binding.measureTarget == binding.anchorView)) {
+            binding.measureTarget = findEnclosingTweetView(binding.anchorView);
+        }
+        return isActuallyVisibleOnScreen(binding.measureTarget)
+                || isActuallyVisibleOnScreen(binding.anchorView);
     }
 
     private static boolean isActuallyVisibleOnScreen(@Nullable View target) {
@@ -732,7 +866,10 @@ public final class TimelineHistoryManager {
             return false;
         }
         float density = target.getResources().getDisplayMetrics().density;
-        int minVisiblePx = Math.max(8, Math.round(20f * density));
+        int viewHeight = target.getHeight();
+        int minVisiblePx = viewHeight > 0
+                ? Math.min(Math.round(12f * density), Math.max(1, viewHeight / 2))
+                : Math.max(4, Math.round(8f * density));
         return rect.width() > 0 && rect.height() >= minVisiblePx;
     }
 

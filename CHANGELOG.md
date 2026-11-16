@@ -1,3 +1,9 @@
+## [3.15.1](https://github.com/KoishiMoe/piko/compare/v3.15.0...v3.15.1) (2026-11-16)
+
+### 🐛 Bug Fixes
+
+* **twitter:** tweet history ([a7f1c00](https://github.com/KoishiMoe/piko/commit/a7f1c001d4108a1095392872f997dd06abac7721))
+
 ## [3.15.0](https://github.com/KoishiMoe/piko/compare/v3.14.2...v3.15.0) (2026-11-16)
 
 ### ✨ New Features

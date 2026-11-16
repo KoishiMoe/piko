@@ -85,6 +85,8 @@ public class DeepLink {
                     key = Settings.FONT_SECTION;
                 } else if ("timeline".equals(lastSegment)) {
                     key = Settings.TIMELINE_SECTION;
+                } else if ("history".equals(lastSegment)) {
+                    key = Settings.TIMELINE_HISTORY_VIEW;
                 } else if ("pref".equals(lastSegment)) {
                     key = Settings.BACKUP_SECTION;
                 } else if ("info".equals(lastSegment)) {

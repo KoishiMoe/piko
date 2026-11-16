@@ -149,6 +149,10 @@ public class ButtonPref extends Preference {
                         PikoUtils.openDefaultLinks();
                     } else if (key.equals(Settings.CHANGELOGS_TITLE)){
                         Changelogs.showChangelogDialog(context);
+                    } else if (key.equals(Settings.TIMELINE_HISTORY_VIEW)) {
+                        fragment = new app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryFragment();
+                    } else if (key.equals(Settings.TIMELINE_HISTORY_CLEAR)) {
+                        app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager.showClearConfirmDialog(context, null);
                     } else if (key.equals(Settings.AUTHOR_MARKER_MANAGE)) {
                         AuthorMarkerHelper.showManageMarkedAccountsDialog(
                                 context,

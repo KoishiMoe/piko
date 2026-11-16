@@ -1120,6 +1120,59 @@ public class ScreenBuilder {
         LegacyTwitterPreferenceCategory category = null;
         if(buildCategory)
             category = preferenceCategory(str("piko_title_timeline"));
+        if (SettingsStatus.timelineHistory) {
+            addPreference(category,
+                    helper.buttonPreference(
+                            str("piko_pref_timeline_history_view"),
+                            String.format(
+                                    java.util.Locale.getDefault(),
+                                    str("piko_pref_timeline_history_view_desc"),
+                                    app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager.getHistoryCount(),
+                                    app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager.getHistoryLimit()
+                            ),
+                            Settings.TIMELINE_HISTORY_VIEW,
+                            "ic_vector_history",
+                            null
+                    )
+            );
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_timeline_history_toggle"),
+                            str("piko_pref_timeline_history_toggle_desc"),
+                            Settings.TIMELINE_HISTORY
+                    )
+            );
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_timeline_history_quick_btn"),
+                            str("piko_pref_timeline_history_quick_btn_desc"),
+                            Settings.TIMELINE_HISTORY_QUICK_BUTTON
+                    )
+            );
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_timeline_history_skip_ads"),
+                            str("piko_pref_timeline_history_skip_ads_desc"),
+                            Settings.TIMELINE_HISTORY_SKIP_PROMOTED
+                    )
+            );
+            addPreference(category,
+                    helper.listPreference(
+                            str("piko_pref_timeline_history_limit"),
+                            str("piko_pref_timeline_history_limit_desc"),
+                            Settings.TIMELINE_HISTORY_LIMIT
+                    )
+            );
+            addPreference(category,
+                    helper.buttonPreference(
+                            str("piko_pref_timeline_history_clear"),
+                            str("piko_pref_timeline_history_clear_desc"),
+                            Settings.TIMELINE_HISTORY_CLEAR,
+                            "ic_vector_trashcan_stroke",
+                            "#FF3B30"
+                    )
+            );
+        }
         if (SettingsStatus.disableAutoTimelineScroll) {
             addPreference(category,
                     helper.switchPreference(

@@ -448,9 +448,14 @@ public class SettingsStatus {
         stitchViewer = true;
     }
 
+    public static boolean timelineHistory = false;
+    public static void timelineHistory() {
+        timelineHistory = true;
+    }
+
 
     public static boolean enableTimelineSection() {
-        return ( fixGalleryBlackScreen || galleryPageCounter || showMultiImageBadge || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
+        return ( timelineHistory || fixGalleryBlackScreen || galleryPageCounter || showMultiImageBadge || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
     }
 
     public static boolean enableMiscSection() {

@@ -530,4 +530,43 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_profile_media_frequency_label">Daily Media</string>
     <string name="piko_profile_media_frequency_per_day">%s/d</string>
     <string name="piko_profile_media_frequency_every_n_days">1 / %sd</string>
+
+    <!-- Timeline history -->
+    <string name="piko_title_timeline_history">Timeline history</string>
+    <string name="piko_pref_timeline_history_view">Browse timeline history</string>
+    <string name="piko_pref_timeline_history_view_desc">%1$d / %2$d posts saved locally</string>
+    <string name="piko_pref_timeline_history_toggle">Record seen posts</string>
+    <string name="piko_pref_timeline_history_toggle_desc">Records posts actually visible on screen in a capped local database so you can recover them after accidental refreshes, crashes, or app pauses</string>
+    <string name="piko_pref_timeline_history_quick_btn">Quick history button in drawer</string>
+    <string name="piko_pref_timeline_history_quick_btn_desc">Shows a shortcut icon in the navigation drawer footer to open timeline history</string>
+    <string name="piko_pref_timeline_history_skip_ads">Skip promoted posts</string>
+    <string name="piko_pref_timeline_history_skip_ads_desc">Exclude ads and promoted posts from timeline history</string>
+    <string name="piko_pref_timeline_history_limit">History storage limit</string>
+    <string name="piko_pref_timeline_history_limit_desc">Maximum number of seen posts retained per account (oldest entries are automatically evicted)</string>
+    <string name="piko_pref_timeline_history_clear">Clear timeline history</string>
+    <string name="piko_pref_timeline_history_clear_desc">Delete all saved seen posts for the current account</string>
+    <string name="piko_history_limit_200">200 posts</string>
+    <string name="piko_history_limit_500">500 posts</string>
+    <string name="piko_history_limit_1000">1,000 posts</string>
+    <string name="piko_history_limit_2000">2,000 posts</string>
+    <string name="piko_history_empty">No seen posts recorded yet</string>
+    <string name="piko_history_search_hint">Search @author or post text</string>
+    <string name="piko_history_clear_search">Clear search</string>
+    <string name="piko_history_filter_all">All</string>
+    <string name="piko_history_filter_media">Media</string>
+    <string name="piko_history_filter_quotes">Quotes</string>
+    <string name="piko_history_clear_btn">Clear</string>
+    <string name="piko_history_clear_confirm_title">Clear timeline history?</string>
+    <string name="piko_history_clear_confirm_desc">This removes all locally recorded seen posts for the current account.</string>
+    <string name="piko_history_cleared_toast">Timeline history cleared</string>
+    <string name="piko_history_action_open">Open post</string>
+    <string name="piko_history_action_reader_mode">Open in Reader mode</string>
+    <string name="piko_history_action_open_author">Open @%s profile</string>
+    <string name="piko_history_action_copy_link">Copy link</string>
+    <string name="piko_history_action_copy_text">Copy text</string>
+    <string name="piko_history_action_delete">Remove from history</string>
+    <string name="piko_history_unknown_author">Unknown author</string>
+    <string name="piko_history_media_only_placeholder">[Media post — tap to open]</string>
+    <string name="piko_history_badge_quote">Quote</string>
+    <string name="piko_history_badge_media">Media %d</string>
 </resources>

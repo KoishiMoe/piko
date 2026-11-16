@@ -338,4 +338,18 @@
         <item>horizontal</item>
     </string-array>
 
+    <string-array name="piko_array_timeline_history_limit">
+        <item>@string/piko_history_limit_200</item>
+        <item>@string/piko_history_limit_500</item>
+        <item>@string/piko_history_limit_1000</item>
+        <item>@string/piko_history_limit_2000</item>
+    </string-array>
+
+    <string-array name="piko_array_timeline_history_limit_val">
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+    </string-array>
+
 </resources>

@@ -93,6 +93,8 @@ public class ActivityHook {
             fragment = new ReaderModeFragment();
         } else if (Settings.STITCH_VIEWER_KEY.equals(activity_name)) {
             fragment = new StitchViewerFragment();
+        } else if (Settings.TIMELINE_HISTORY_VIEW.equals(activity_name)) {
+            fragment = new app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryFragment();
         } else {
             fragment = new PageFragment();
         }
@@ -139,6 +141,7 @@ public class ActivityHook {
         String toolbarText = switch (activity_name) {
             case Settings.READER_MODE_KEY -> "piko_title_native_reader_mode";
             case Settings.STITCH_VIEWER_KEY -> "piko_title_stitch_viewer";
+            case Settings.TIMELINE_HISTORY_VIEW -> "piko_title_timeline_history";
             case Settings.CHANGE_APP_ICON -> "piko_pref_customisation_change_app_icon";
             case Settings.EXPORT_LOGIN_TOKEN -> "piko_pref_export_login_token";
             default -> "piko_title_settings";

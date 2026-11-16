@@ -552,5 +552,21 @@ public class Pref {
         return Utils.getBooleanPref(Settings.PROFILE_MEDIA_FREQUENCY) && SettingsStatus.mediaFrequencyStat;
     }
 
+    public static boolean enableTimelineHistory() {
+        return Utils.getBooleanPref(Settings.TIMELINE_HISTORY) && SettingsStatus.timelineHistory;
+    }
+
+    public static boolean showTimelineHistoryButton() {
+        return Utils.getBooleanPref(Settings.TIMELINE_HISTORY_QUICK_BUTTON);
+    }
+
+    public static boolean skipTimelineHistoryPromoted() {
+        return Utils.getBooleanPref(Settings.TIMELINE_HISTORY_SKIP_PROMOTED);
+    }
+
+    public static String timelineHistoryLimit() {
+        return Utils.getStringPref(Settings.TIMELINE_HISTORY_LIMIT);
+    }
+
     //end
 }

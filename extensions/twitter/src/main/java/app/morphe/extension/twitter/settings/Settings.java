@@ -106,6 +106,10 @@ public class Settings {
     public static final BooleanSetting FIX_GALLERY_BLACK_SCREEN = new BooleanSetting("fix_gallery_black_screen", true);
     public static final BooleanSetting GALLERY_PAGE_COUNTER = new BooleanSetting("gallery_page_counter", true);
     public static final BooleanSetting TIMELINE_SHOW_MULTI_IMAGE_BADGE = new BooleanSetting("timeline_show_multi_image_badge", true);
+    public static final BooleanSetting TIMELINE_HISTORY = new BooleanSetting("timeline_history", true);
+    public static final BooleanSetting TIMELINE_HISTORY_QUICK_BUTTON = new BooleanSetting("timeline_history_quick_button", true);
+    public static final BooleanSetting TIMELINE_HISTORY_SKIP_PROMOTED = new BooleanSetting("timeline_history_skip_promoted", true);
+    public static final StringSetting TIMELINE_HISTORY_LIMIT = new StringSetting("timeline_history_limit", "500");
 
     public static final BooleanSetting PREMIUM_UNDO_POSTS = new BooleanSetting("premium_undo_posts", false);
     public static final BooleanSetting PREMIUM_NAVBAR = new BooleanSetting("premium_custom_navbar", true);
@@ -170,4 +174,6 @@ public class Settings {
     public static final String NATIVE_SECTION = "native_section";
     public static final String READER_MODE_KEY = "readerMode";
     public static final String STITCH_VIEWER_KEY = "stitchViewer";
+    public static final String TIMELINE_HISTORY_VIEW = "timeline_history_view";
+    public static final String TIMELINE_HISTORY_CLEAR = "timeline_history_clear";
 }

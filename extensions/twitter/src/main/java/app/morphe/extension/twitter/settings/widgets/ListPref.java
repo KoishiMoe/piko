@@ -46,6 +46,9 @@ public class ListPref extends ListPreference {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String selectedValue = (String) newValue;
                 helper.setValue(preference,newValue);
+                if (Settings.TIMELINE_HISTORY_LIMIT.key.equals(preference.getKey())) {
+                    app.morphe.extension.twitter.patches.timeline.history.TimelineHistoryManager.pruneCurrentAccount();
+                }
                 return true;
             }
         });
@@ -88,6 +91,9 @@ public class ListPref extends ListPreference {
         }else if (key == Settings.NATIVE_STITCH_DIRECTION.key) {
             entries = ResourceUtils.getStringArray("piko_array_stitch_direction");
             entriesValues = ResourceUtils.getStringArray("piko_array_stitch_direction_val");
+        }else if (key == Settings.TIMELINE_HISTORY_LIMIT.key) {
+            entries = ResourceUtils.getStringArray("piko_array_timeline_history_limit");
+            entriesValues = ResourceUtils.getStringArray("piko_array_timeline_history_limit_val");
         }
 
         setEntries(entries);

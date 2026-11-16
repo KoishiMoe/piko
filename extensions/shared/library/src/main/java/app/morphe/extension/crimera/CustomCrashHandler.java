@@ -29,8 +29,23 @@ public class CustomCrashHandler implements Thread.UncaughtExceptionHandler {
         this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
+    private static final java.util.concurrent.CopyOnWriteArrayList<Runnable> CRASH_LISTENERS =
+            new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    public static void registerCrashListener(Runnable listener) {
+        if (listener != null && !CRASH_LISTENERS.contains(listener)) {
+            CRASH_LISTENERS.add(listener);
+        }
+    }
+
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
+        for (Runnable listener : CRASH_LISTENERS) {
+            try {
+                listener.run();
+            } catch (Throwable ignored) {
+            }
+        }
         String stackTrace = Log.getStackTraceString(throwable);
         saveCrashToFile(stackTrace);
 

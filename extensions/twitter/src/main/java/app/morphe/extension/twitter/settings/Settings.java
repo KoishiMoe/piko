@@ -110,6 +110,7 @@ public class Settings {
     public static final BooleanSetting TIMELINE_HISTORY_QUICK_BUTTON = new BooleanSetting("timeline_history_quick_button", true);
     public static final BooleanSetting TIMELINE_HISTORY_SKIP_PROMOTED = new BooleanSetting("timeline_history_skip_promoted", true);
     public static final StringSetting TIMELINE_HISTORY_LIMIT = new StringSetting("timeline_history_limit", "500");
+    public static final BooleanSetting TIMELINE_BATCH_MODERATION = new BooleanSetting("timeline_batch_moderation", true);
 
     public static final BooleanSetting PREMIUM_UNDO_POSTS = new BooleanSetting("premium_undo_posts", false);
     public static final BooleanSetting PREMIUM_NAVBAR = new BooleanSetting("premium_custom_navbar", true);

@@ -568,5 +568,9 @@ public class Pref {
         return Utils.getStringPref(Settings.TIMELINE_HISTORY_LIMIT);
     }
 
+    public static boolean enableBatchModeration() {
+        return SettingsStatus.batchModeration && Utils.getBooleanPref(Settings.TIMELINE_BATCH_MODERATION);
+    }
+
     //end
 }

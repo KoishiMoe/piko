@@ -569,4 +569,35 @@ It's recommended to read this before using this feature. It includes some import
     <string name="piko_history_media_only_placeholder">[Media post — tap to open]</string>
     <string name="piko_history_badge_quote">Quote</string>
     <string name="piko_history_badge_media">Media %d</string>
+
+    <!-- Batch moderation in replies -->
+    <string name="piko_pref_batch_moderation">Batch mute/block in replies</string>
+    <string name="piko_pref_batch_moderation_desc">Adds a multi-select button in post reply toolbars to batch mute or block commenters</string>
+    <string name="piko_batch_mod_menu_title">Batch mute/block</string>
+    <string name="piko_batch_mod_hint_empty">Tap replies above to select accounts</string>
+    <string name="piko_batch_mod_selected_summary">%1$d user(s) · %2$d reply(s)</string>
+    <string name="piko_batch_mod_select_all">Select all</string>
+    <string name="piko_batch_mod_deselect_all">Clear</string>
+    <string name="piko_batch_mod_mute_btn">Mute (%d)</string>
+    <string name="piko_batch_mod_block_btn">Block (%d)</string>
+    <string name="piko_batch_mod_mute_idle">Mute</string>
+    <string name="piko_batch_mod_block_idle">Block</string>
+    <string name="piko_batch_mod_cancel">Cancel</string>
+    <string name="piko_batch_mod_stop">Stop</string>
+    <string name="piko_batch_mod_no_replies">No selectable replies loaded yet</string>
+    <string name="piko_batch_mod_review_title">Selected accounts (%d)</string>
+    <string name="piko_batch_mod_confirm_mute_title">Mute %d account(s)?</string>
+    <string name="piko_batch_mod_confirm_block_title">Block %d account(s)?</string>
+    <string name="piko_batch_mod_confirm_mute_desc">Posts and notifications from these accounts will be hidden. They will not be notified.</string>
+    <string name="piko_batch_mod_confirm_block_desc">Blocked accounts can no longer follow, message, or view your posts.</string>
+    <string name="piko_batch_mod_and_more">... and %d more</string>
+    <string name="piko_batch_mod_progress_mute">Muting @%1$s (%2$d/%3$d)...</string>
+    <string name="piko_batch_mod_progress_block">Blocking @%1$s (%2$d/%3$d)...</string>
+    <string name="piko_batch_mod_done_mute">Muted %d account(s)</string>
+    <string name="piko_batch_mod_done_block">Blocked %d account(s)</string>
+    <string name="piko_batch_mod_done_partial">%1$d succeeded, %2$d failed</string>
+    <string name="piko_batch_mod_cancelled">Stopped (%1$d/%2$d completed)</string>
+    <string name="piko_batch_mod_tag_muted">Muted</string>
+    <string name="piko_batch_mod_tag_blocked">Blocked</string>
+    <string name="piko_batch_mod_reply_count">%d reply(s) in thread</string>
 </resources>

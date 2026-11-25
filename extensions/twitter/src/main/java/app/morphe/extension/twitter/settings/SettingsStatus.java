@@ -453,9 +453,14 @@ public class SettingsStatus {
         timelineHistory = true;
     }
 
+    public static boolean batchModeration = false;
+    public static void batchModeration() {
+        batchModeration = true;
+    }
+
 
     public static boolean enableTimelineSection() {
-        return ( timelineHistory || fixGalleryBlackScreen || galleryPageCounter || showMultiImageBadge || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
+        return ( batchModeration || timelineHistory || fixGalleryBlackScreen || galleryPageCounter || showMultiImageBadge || hidePostMetrics || hideNavbarBadge || showSourceLabel || hideCommBadge || showSensitiveMedia || hideNudgeButton || disableAutoTimelineScroll || forceTranslate || hidePromoteButton || hideCommunityNote || hideLiveThreads || hideBanner || hideInlineBmk || showPollResultsEnabled || hideImmersivePlayer || enableVidAutoAdvance || enableForceHD);
     }
 
     public static boolean enableMiscSection() {

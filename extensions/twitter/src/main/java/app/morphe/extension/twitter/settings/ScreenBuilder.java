@@ -1296,6 +1296,15 @@ public class ScreenBuilder {
                     )
             );
         }
+        if (SettingsStatus.batchModeration) {
+            addPreference(category,
+                    helper.switchPreference(
+                            str("piko_pref_batch_moderation"),
+                            str("piko_pref_batch_moderation_desc"),
+                            Settings.TIMELINE_BATCH_MODERATION
+                    )
+            );
+        }
         if (SettingsStatus.enableForceHD) {
             addPreference(category,
                     helper.switchPreference(

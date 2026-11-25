@@ -174,6 +174,7 @@ public class SettingsAboutFragment extends PreferenceFragment {
         flags.put(str("piko_pref_timeline_show_multi_image_badge"),SettingsStatus.showMultiImageBadge);
         flags.put(str("piko_title_stitch_viewer"),SettingsStatus.stitchViewer);
         flags.put(str("piko_title_timeline_history"),SettingsStatus.timelineHistory);
+        flags.put(str("piko_pref_batch_moderation"),SettingsStatus.batchModeration);
 
         LegacyTwitterPreferenceCategory patPref = preferenceCategory(str("piko_pref_patches"), screen);
 

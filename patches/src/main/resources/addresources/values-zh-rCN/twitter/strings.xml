@@ -537,4 +537,35 @@ https://github.com/crimera/piko/blob/dev/docs/about_login_token_patch.md
     <string name="piko_history_media_only_placeholder">[媒体帖子 — 点击查看原帖]</string>
     <string name="piko_history_badge_quote">引用</string>
     <string name="piko_history_badge_media">%d 媒体</string>
+
+    <!-- Batch moderation in replies -->
+    <string name="piko_pref_batch_moderation">评论区批量屏蔽 / 拉黑</string>
+    <string name="piko_pref_batch_moderation_desc">在帖子详情页顶部栏添加多选按钮，支持一键多选评论者并批量屏蔽或拉黑</string>
+    <string name="piko_batch_mod_menu_title">批量屏蔽/拉黑</string>
+    <string name="piko_batch_mod_hint_empty">点击上方评论选择需要处理的账号</string>
+    <string name="piko_batch_mod_selected_summary">已选 %1$d 人 · %2$d 条评论</string>
+    <string name="piko_batch_mod_select_all">全选当前</string>
+    <string name="piko_batch_mod_deselect_all">清空</string>
+    <string name="piko_batch_mod_mute_btn">批量屏蔽 (%d)</string>
+    <string name="piko_batch_mod_block_btn">批量拉黑 (%d)</string>
+    <string name="piko_batch_mod_mute_idle">批量屏蔽</string>
+    <string name="piko_batch_mod_block_idle">批量拉黑</string>
+    <string name="piko_batch_mod_cancel">取消</string>
+    <string name="piko_batch_mod_stop">停止</string>
+    <string name="piko_batch_mod_no_replies">当前未加载到可选择的评论</string>
+    <string name="piko_batch_mod_review_title">已选账号 (%d)</string>
+    <string name="piko_batch_mod_confirm_mute_title">确认批量屏蔽 %d 位用户？</string>
+    <string name="piko_batch_mod_confirm_block_title">确认批量拉黑 %d 位用户？</string>
+    <string name="piko_batch_mod_confirm_mute_desc">屏蔽后将隐藏这些账号的帖子与通知，对方不会收到提示。</string>
+    <string name="piko_batch_mod_confirm_block_desc">拉黑后对方将无法关注你、给你发私信或查看你的帖子。</string>
+    <string name="piko_batch_mod_and_more">… 等另外 %d 人</string>
+    <string name="piko_batch_mod_progress_mute">正在屏蔽 @%1$s (%2$d/%3$d)…</string>
+    <string name="piko_batch_mod_progress_block">正在拉黑 @%1$s (%2$d/%3$d)…</string>
+    <string name="piko_batch_mod_done_mute">已成功屏蔽 %d 位用户</string>
+    <string name="piko_batch_mod_done_block">已成功拉黑 %d 位用户</string>
+    <string name="piko_batch_mod_done_partial">成功 %1$d 人，失败 %2$d 人</string>
+    <string name="piko_batch_mod_cancelled">已停止（已完成 %1$d/%2$d）</string>
+    <string name="piko_batch_mod_tag_muted">已屏蔽</string>
+    <string name="piko_batch_mod_tag_blocked">已拉黑</string>
+    <string name="piko_batch_mod_reply_count">本帖评论 %d 条</string>
 </resources>

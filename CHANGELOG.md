@@ -1,3 +1,9 @@
+## [3.16.0](https://github.com/KoishiMoe/piko/compare/v3.15.1...v3.16.0) (2026-11-25)
+
+### ✨ New Features
+
+* **twitter:** multi-select mute/block ([c24bfe3](https://github.com/KoishiMoe/piko/commit/c24bfe3776e73446c676a732b6fb24734a78d205))
+
 ## [3.15.1](https://github.com/KoishiMoe/piko/compare/v3.15.0...v3.15.1) (2026-11-16)
 
 ### 🐛 Bug Fixes

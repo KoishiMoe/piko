@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.15.1",
+  "version": "3.16.0",
   "patches": [
     {
       "name": "Add ability to copy media link",
@@ -144,6 +144,33 @@
     {
       "name": "Author quick search",
       "description": "Adds an interactive quick search builder to the native share sheet.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.twitter.android",
+          "name": "Twitter",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#000000",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "12.19.1-release.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Batch mute and block in replies",
+      "description": "Adds a multi-select mode in tweet reply sections to batch mute or block commenters.",
       "default": true,
       "category": null,
       "compatiblePackages": [

@@ -1,3 +1,9 @@
+## [3.16.1](https://github.com/KoishiMoe/piko/compare/v3.16.0...v3.16.1) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+* **twitter:** tweet history crash the app on rebuilding MainActivity ([caaf3de](https://github.com/KoishiMoe/piko/commit/caaf3decb1dffa5422483698f902c99bb4afc24f))
+
 ## [3.16.0](https://github.com/KoishiMoe/piko/compare/v3.15.1...v3.16.0) (2026-11-25)
 
 ### ✨ New Features

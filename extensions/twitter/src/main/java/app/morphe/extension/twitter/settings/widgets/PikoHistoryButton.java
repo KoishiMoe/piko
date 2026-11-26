@@ -10,6 +10,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -48,13 +50,34 @@ public class PikoHistoryButton extends AppCompatButton implements View.OnClickLi
         updateVisibility();
     }
 
+    private final Runnable bringToFrontRunnable = () -> {
+        if (!isAttachedToWindow() || getVisibility() != View.VISIBLE) {
+            return;
+        }
+        ViewParent parent = getParent();
+        if (parent instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) parent;
+            int count = group.getChildCount();
+            if (count > 0 && group.getChildAt(count - 1) != this) {
+                bringToFront();
+            }
+        }
+    };
+
+    private void scheduleBringToFront() {
+        removeCallbacks(bringToFrontRunnable);
+        post(bringToFrontRunnable);
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         updateVisibility();
         if (getVisibility() == View.VISIBLE) {
-            bringToFront();
-            post(this::bringToFront);
+            // Defer reordering until after ViewGroup.dispatchAttachedToWindow finishes iterating
+            // over its children; calling bringToFront() synchronously mutates mChildren mid-loop
+            // and skips dispatchAttachedToWindow on subsequent siblings (e.g. drawer ComposeView).
+            scheduleBringToFront();
         }
     }
 
@@ -63,9 +86,14 @@ public class PikoHistoryButton extends AppCompatButton implements View.OnClickLi
         super.onWindowVisibilityChanged(visibility);
         updateVisibility();
         if (visibility == View.VISIBLE && getVisibility() == View.VISIBLE) {
-            bringToFront();
-            post(this::bringToFront);
+            scheduleBringToFront();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        removeCallbacks(bringToFrontRunnable);
+        super.onDetachedFromWindow();
     }
 
     private void updateVisibility() {
